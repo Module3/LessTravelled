@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>LessTravelled</title>
+  <link rel='stylesheet' href='css/main.css' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+  <div class='welcome-page'>
+    
+    <div class='welcome-header'>Less<strong><span id="welcome-travelled">Travelled</span></strong></div>
+    
+    <div id='left'>
+    <div class='welcome-controls'>
+        <form class='welcome-form'>
+          <input id='start' class='welcome-input' type='text' onfocus="if(this.value == 'Start:') { this.value = ''; }" value="Start:" onblur="if(this.value == '') {this.value='Start:';}"></input>
+          <input id='end' class='welcome-input' type='text' onfocus="if(this.value == 'End:') { this.value = ''; }" value="End:" onblur="if(this.value == '') {this.value='End:';}"></input>
+          <input id='find' class='welcome-input' type='text' onfocus="if(this.value == 'Find:') { this.value = ''; }" value="Find:" onblur="if(this.value == '') {this.value='Find:';}"></input>
+          <button class='welcome-submit'>SEARCH</button>
+        </form>
+      </div>
+    </div>
+    
+    <div id='right'>
+      <div class='welcome-map'></div>
+    </div>
+  </div>
+
+</body>
+</html>

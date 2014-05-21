@@ -1,0 +1,121 @@
+.welcome-page {
+  width: 100%;
+  height: 750px;
+  background-image: url('../img/newyork.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0 -50px;
+  background-color: black;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#left {
+  width: 50%;
+  background-color: blue;
+}
+
+p {
+  margin: 5px 0 0 20px;
+  font-family: 'Lato' sans-serif;
+  font-weight: 100;
+  color: gray;
+  font-size: 30px;
+}
+
+#right {
+  width: 50%;
+  background-color: red;
+}
+
+.welcome-header {
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  font-size: 90px;
+  line-height: 90px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+  color: white;
+  background-color: #eee;
+  background: rgba(0, 0, 0, 0.55);
+  position: inline-block;
+}
+
+.welcome-controls {
+  height: 400px;
+  width: 375px;
+  position: absolute;
+  top: 175px;
+  left: 100px;
+  background-color: #eee;
+  border-radius: 2px;
+  border: 1px solid gray;
+  -moz-box-shadow:    0px 0px 15px 1px #000;
+  -webkit-box-shadow: 0px 0px 15px 1px #000;
+  box-shadow:         0px 0px 15px 1px #000;
+}
+
+.welcome-map {
+  height: 400px;
+  width: 375px;
+  position: absolute;
+  top: 175px;
+  right: 100px;
+  background-color: #eee;
+  border-radius: 2px;
+  border: 1px solid gray;
+  -moz-box-shadow:    0px 0px 15px 1px #000;
+  -webkit-box-shadow: 0px 0px 15px 1px #000;
+  box-shadow:         0px 0px 15px 1px #000;
+}
+
+.welcome-input {
+  height: 40px;
+  width: 250px;
+  color: #bbb;
+  margin: 25px 0 0 55px;
+  font-size: 20px;
+  border-radius: 2px;
+}
+
+.welcome-input:focus {
+  color: black;
+  outline: none;
+}
+
+.welcome-submit {
+  background-color: #cc4400;
+  color: #eee;
+  font-size: 35px;
+  outline-style: none;
+  width: 175px;
+  height: 55px;
+  border-radius: 2px;
+  border: none;
+  margin-left: 5px;
+  cursor: pointer;
+  margin: 20px 0 0 90px;
+}
+
+#welcome-travelled {
+  color: #87CEFA;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
