@@ -1,30 +1,52 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>LessTravelled</title>
+  <link rel="stylesheet" href="css/normalize.min.css">
   <link rel='stylesheet' href='css/main.css' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 
+  <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+  <title>LessTravelled</title>
+
 </head>
 <body>
+ 
   <div class='welcome-page'>
     
-    <div class='welcome-header'>Less<strong><span id="welcome-travelled">Travelled</span></strong></div>
+    <div class='welcome-header'>Less<strong><span id="travelled">Travelled</span></strong></div>
     
-    <div id='left'>
-    <div class='welcome-controls'>
-        <form class='welcome-form'>
-          <input id='start' class='welcome-input' type='text' onfocus="if(this.value == 'Start:') { this.value = ''; }" value="Start:" onblur="if(this.value == '') {this.value='Start:';}"></input>
-          <input id='end' class='welcome-input' type='text' onfocus="if(this.value == 'End:') { this.value = ''; }" value="End:" onblur="if(this.value == '') {this.value='End:';}"></input>
-          <input id='find' class='welcome-input' type='text' onfocus="if(this.value == 'Find:') { this.value = ''; }" value="Find:" onblur="if(this.value == '') {this.value='Find:';}"></input>
-          <button class='welcome-submit'>SEARCH</button>
-        </form>
+    <div class='welcome-left'>
+      <div class='welcome-controls'>
+        <!--<div class='text'>
+          <p>Enter your route</p>
+          <p>Tell us what to find</p>
+          <p>Along-the-Way</p>
+        </div>-->
+
+        <div class='welcome-form-div'>
+          <form class='welcome-form'>
+            <input id='from' class='welcome-input' type='text' onfocus="if(this.value == 'Start:') { this.value = ''; }" value="Start:" onblur="if(this.value == '') {this.value='Start:';}"></input>
+            <input id='to' class='welcome-input' type='text' onfocus="if(this.value == 'End:') { this.value = ''; }" value="End:" onblur="if(this.value == '') {this.value='End:';}"></input>
+            <input id='search-term' class='welcome-input' type='text' onfocus="if(this.value == 'Find:') { this.value = ''; }" value="Find:" onblur="(this.value == '') ? this.value='Find:' : this.style='{color: black;}'"></input>
+            <button class='welcome-submit'>SEARCH</button>
+            <p class='advanced-button'>Advanced</p>
+          </form>
+        </div>
       </div>
     </div>
     
-    <div id='right'>
+    <div class='welcome-right'>
       <div class='welcome-map'></div>
+    </div>
+
+    <div class='welcome-advanced-controls hidden'>
     </div>
   </div>
 
