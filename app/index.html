@@ -23,22 +23,12 @@
     <div class='welcome-header'>Less<strong><span id="travelled">Travelled</span></strong></div>
     
     <div class='welcome-left'>
-      <div class='welcome-controls'>
+      <div id='controls' class='welcome-controls'>
         <!--<div class='text'>
           <p>Enter your route</p>
           <p>Tell us what to find</p>
           <p>Along-the-Way</p>
         </div>-->
-
-        <div class='welcome-form-div'>
-          <form class='welcome-form'>
-            <input id='from' class='welcome-input' type='text' onfocus="if(this.value == 'Start:') { this.value = ''; }" value="Start:" onblur="if(this.value == '') {this.value='Start:';}"></input>
-            <input id='to' class='welcome-input' type='text' onfocus="if(this.value == 'End:') { this.value = ''; }" value="End:" onblur="if(this.value == '') {this.value='End:';}"></input>
-            <input id='search-term' class='welcome-input' type='text' onfocus="if(this.value == 'Find:') { this.value = ''; }" value="Find:" onblur="(this.value == '') ? this.value='Find:' : this.style='{color: black;}'"></input>
-            <button class='welcome-submit'>SEARCH</button>
-            <p class='advanced-button'>Advanced</p>
-          </form>
-        </div>
       </div>
     </div>
     
