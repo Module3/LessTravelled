@@ -92,8 +92,11 @@
 
 
           vertices3 = [];
-          //console.log(vertices.length);
+          console.log(vertices.length);
           var secondLength = Math.ceil(vertices.length / 42);
+          if (secondLength === 1) {
+            secondLength = 2;
+          }
           console.log("2nd length: " + secondLength)
           //vertices3.push(vertices[0]);
           for (i = 0; i < vertices.length; i++) {
