@@ -142,25 +142,22 @@
                     // Perform search over this bounds 
                     var infowindow = new google.maps.InfoWindow();
                     var service = new google.maps.places.PlacesService(map);
+                    
+
                     var request = {
                       bounds: bounds,
-                      //radius: '500',
-                      types: ['food']
+                      keyword: 'food'
                     };
+                    service.radarSearch(request, callback);
 
-                    service.nearbySearch(request, callback);
-
+                    //service.nearbySearch(request, callback);
                     function callback(results, status) {
                       if (status == google.maps.places.PlacesServiceStatus.OK) {
-                        for (var i = 0; i < results.length; i++) {               
-                          // Code to create markers that overlap my polygon!
-                          var myLatlng = new google.maps.LatLng(results[i].geometry.location.k,results[i].geometry.location.A);
-                          
+                        for (var i = 0; i < results.length; i++) {                    
+                          var myLatlng = new google.maps.LatLng(results[i].geometry.location.k,results[i].geometry.location.A);   
                           if (google.maps.geometry.poly.containsLocation(myLatlng, buffResult)) {
                             createMarker(results[i]);
-                            console.log("Damn look at this one: " + results[i].name);
                           } else {
-                            //createMarker(results[i]);
                             console.log("Didn't get displayed: " + results[i].name);
                           }
                         }
@@ -172,10 +169,15 @@
                         map: map,
                         position: place.geometry.location
                       });
-
                       google.maps.event.addListener(marker, 'click', function() {
-                        infowindow.setContent(place.name);
-                        infowindow.open(map, this);
+                        service.getDetails(place, function(result, status) {
+                          if (status != google.maps.places.PlacesServiceStatus.OK) {
+                            alert(status);
+                            return;
+                          }
+                          infowindow.setContent(result.name);
+                          infowindow.open(map, marker);
+                        })
                       });
                     }
 
@@ -184,7 +186,6 @@
                 console.log("Buffer Error!");
               }
           });
-
             //}
             //} 
           //);
