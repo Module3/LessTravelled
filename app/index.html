@@ -10,21 +10,33 @@
 <body>
   <div class='welcome-page'>
     
-    <div class='welcome-header'>Less<strong><span id="welcome-travelled">Travelled</span></strong></div>
+    <div class='welcome-header'>Less<strong><span id="travelled">Travelled</span></strong></div>
     
-    <div id='left'>
-    <div class='welcome-controls'>
-        <form class='welcome-form'>
-          <input id='start' class='welcome-input' type='text' onfocus="if(this.value == 'Start:') { this.value = ''; }" value="Start:" onblur="if(this.value == '') {this.value='Start:';}"></input>
-          <input id='end' class='welcome-input' type='text' onfocus="if(this.value == 'End:') { this.value = ''; }" value="End:" onblur="if(this.value == '') {this.value='End:';}"></input>
-          <input id='find' class='welcome-input' type='text' onfocus="if(this.value == 'Find:') { this.value = ''; }" value="Find:" onblur="if(this.value == '') {this.value='Find:';}"></input>
-          <button class='welcome-submit'>SEARCH</button>
-        </form>
+    <div class='welcome-left'>
+      <div class='welcome-controls'>
+        <!--<div class='text'>
+          <p>Enter your route</p>
+          <p>Tell us what to find</p>
+          <p>Along-the-Way</p>
+        </div>-->
+
+        <div class='welcome-form-div'>
+          <form class='welcome-form'>
+            <input id='from' class='welcome-input' type='text' onfocus="if(this.value == 'Start:') { this.value = ''; }" value="Start:" onblur="if(this.value == '') {this.value='Start:';}"></input>
+            <input id='to' class='welcome-input' type='text' onfocus="if(this.value == 'End:') { this.value = ''; }" value="End:" onblur="if(this.value == '') {this.value='End:';}"></input>
+            <input id='search-term' class='welcome-input' type='text' onfocus="if(this.value == 'Find:') { this.value = ''; }" value="Find:" onblur="(this.value == '') ? this.value='Find:' : this.style='{color: black;}'"></input>
+            <button class='welcome-submit'>SEARCH</button>
+            <p class='advanced-button'>Advanced</p>
+          </form>
+        </div>
       </div>
     </div>
     
-    <div id='right'>
+    <div class='welcome-right'>
       <div class='welcome-map'></div>
+    </div>
+
+    <div class='welcome-advanced-controls hidden'>
     </div>
   </div>
 
