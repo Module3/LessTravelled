@@ -135,6 +135,11 @@ p {
   cursor: pointer;
 }
 
+.welcome-submit:hover,
+.submit:hover {
+  background-color: #aa3300;
+}
+
 #welcome-travelled,
 #travelled {
   color: #87CEFA;
@@ -279,11 +284,10 @@ p {
 @media (min-width: 900px) {
 
   .welcome-page {
-    height: 750px;
+    height: 680px;
     background-image: url('../img/newyork.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: 0 -50px;
   }
 
   .advanced-button {
