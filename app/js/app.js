@@ -1,11 +1,14 @@
-var backbone = require('backbone');
+var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
-var Backbone.$ = $;
+Backbone.$ = $;
 
 var Controls = require('./views/controlsView');
 
-var controls = new Controls();
+$(function(){
 
+  var controls = new Controls();
+  console.log('app started.');
 
+});
 

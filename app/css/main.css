@@ -288,7 +288,7 @@ p {
 
   .welcome-page {
     height: 680px;
-    background-image: url('../img/newyork.jpg');
+    background-image: url('newyork.jpg');
     background-size: cover;
     background-repeat: no-repeat;
   }

@@ -1,0 +1,418 @@
+.hidden {
+  display: none;
+}
+
+/*/////////////////////////////////////////
+
+//Mobile//
+
+/////////////////////////////////////////*/
+
+.page,
+.welcome-page {
+  width: 100%;
+  height: 750px;
+}
+
+.advanced-button {
+  margin: 0;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.advanced-button:hover {
+  text-decoration: underline;
+}
+
+.welcome-advanced-controls,
+.advanced-controls {
+  background-color: #bbb;
+  margin: 0;
+  padding: 0;
+  clear: left;
+  width: 100%;
+  height: 445px;
+  position: absolute;
+  top: 305px;
+}
+
+.welcome-form-div,
+.form-div {
+  height: 150px;
+  width: 200px;
+  overflow: none;
+  margin: 0 auto 0 auto;
+  position: relative;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.welcome-left,
+#left {
+  width: 100%;
+}
+
+p {
+  margin: 5px 0 0 20px;
+  font-family: 'Lato' sans-serif;
+  font-weight: 100;
+  color: gray;
+  font-size: 30px;
+}
+
+.welcome-right,
+#right {
+  width: 100%;
+}
+
+.welcome-header,
+.header {
+  width: 100%;
+  height: 70px;
+  text-align: center;
+  font-size: 4em;
+  line-height: 65px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+  color: white;
+  background-color: #eee;
+  display: inline-block;
+  -moz-box-shadow:    1px 0px 15px 1px #000;
+  -webkit-box-shadow: 1px 0px 15px 1px #000;
+  box-shadow:         1px 0px 15px 1px #000;
+  position: relative;
+  z-index: 1000;
+}
+
+.welcome-controls,
+.controls {
+  height: 225px;
+  width: 100%;
+  position: relative;
+  padding-top: 10px;
+  background-color: #eee;
+  text-align: center;
+  display: inline-block;
+}
+
+.welcome-map,
+.map {
+  height: 440px;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+}
+
+.welcome-input,
+.input {
+  height: 30px;
+  width: 200px;
+  color: #bbb;
+  margin: 10px auto 0 auto;
+  font-size: 20px;
+  border-radius: 2px;
+  outline: none;
+  border: 2px solid #fff;
+}
+
+.welcome-input:focus,
+.input:focus {
+  color: black;
+  outline: none;
+  border: 2px solid gray;
+}
+
+.welcome-submit,
+.submit {
+  background-color: #cc4400;
+  color: #eee;
+  font-size: 25px;
+  margin: 10px 0 5px 0;
+  outline-style: none;
+  width: 150px;
+  height: 45px;
+  border: none;
+  cursor: pointer;
+}
+
+.welcome-submit:hover,
+.submit:hover {
+  background-color: #aa3300;
+}
+
+#welcome-travelled,
+#travelled {
+  color: #87CEFA;
+}
+
+
+
+
+
+
+/*///////////////////////////////////////
+
+//Small Tablet//
+
+////////////////////////////////////////*/
+
+
+@media (min-width: 500px){
+
+  .advanced-button {
+    position: absolute;
+    top: 105px;
+    right: 105px;
+  }
+
+  .welcome-advanced-controls,
+  .advanced-controls {
+    height: 145px;
+    top: 245px;
+  }
+
+  .welcome-form-div,
+  .form-div  {
+      width: 500px;
+  }
+
+  .welcome-header,
+  .header {
+    height: 100px;
+    line-height: 90px;
+    font-size: 75px;
+  }
+
+  .welcome-controls,
+  .controls {
+    height: 135px;
+  }
+
+  .welcome-input,
+  .input {
+    margin: 10px 30px;
+    float: left;
+  }
+
+  .welcome-input:focus,
+  .input:focus {
+    color: black;
+  }
+
+  .welcome-map,
+  .map {
+    height: 500px;
+  }
+
+  .welcome-submit,
+  .submit {
+    margin:;
+    position: absolute;
+    top: 50px;
+    right: 60px;
+  }
+
+  /*This size only*/
+  #search-term {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    }
+  }
+
+
+
+
+/*////////////////////////////////////////
+
+//Large/Horizontal Tablet//
+
+////////////////////////////////////////*/
+
+
+@media (min-width: 650px){
+   
+  .welcome-page,
+  .page {
+    height: 700px;
+    display: relative;
+  }
+
+  .advanced-button {
+    position: static;
+  }
+
+  .welcome-form-div,
+  .form-div {
+    width: 650px;
+  }
+
+  .welcome-header,
+  .header {
+    height: 100px;
+    font-size: 90px;
+    line-height: 90px;
+  }
+
+  .welcome-input,
+  .input {
+    margin: 15px auto 0 auto;
+    float: none;
+  }
+
+  .welcome-submit,
+  .submit {
+    margin: 10px auto 5px auto;
+    position: static;
+  }
+
+  #search-term {
+    position: static;
+  }
+
+
+
+
+
+/*////////////////////////////////////////
+
+//Laptop/Desktop//
+
+/////////////////////////////////////////*/
+
+
+@media (min-width: 900px) {
+
+  .welcome-page {
+    height: 680px;
+    background-image: url('newyork.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .advanced-button {
+    font-size: 20px;
+  }
+
+  .advanced-controls {
+    height: 390px;
+    width: 30%;
+    position: static;
+    display: block;
+  }
+
+  .welcome-form-div {
+    width: 375px;
+  }
+
+  .form-div {
+    width: 100%;
+    position: static;
+    margin: 0;
+  }
+
+  .welcome-left {
+    width: 50%;
+    height: 500px;
+    float: left;
+  }
+
+  #left {
+    width: 30%;
+    float: left;
+  }
+
+  .welcome-right {
+    width: 50%;
+    height: 500px;
+    float: right;
+  }
+
+  #right {
+    width: 70%;
+    float: right;
+  }
+  
+  .welcome-header {
+    background: rgba(0, 0, 0, 0.55);
+    -moz-box-shadow:    0px 0px 0px 0px #000;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow:         0px 0px 0px 0px #000;
+  }
+
+  .welcome-controls {
+    height: 400px;
+    width: 375px;
+    position: static;
+    display: block;
+    padding-top: 0;
+    margin: 80px auto;
+    border-radius: 2px;
+    border: 1px solid gray;
+    -moz-box-shadow:    0px 0px 15px 1px #000;
+    -webkit-box-shadow: 0px 0px 15px 1px #000;
+    box-shadow:         0px 0px 15px 1px #000;
+  }
+
+  .controls {
+    height: 250px;
+    border-right: 1px solid gray;
+  }
+
+  .welcome-map {
+    height: 400px;
+    width: 375px;
+    display: block;
+    margin: 80px auto;
+    background-color: #eee;
+    border-radius: 2px;
+    border: 1px solid gray;
+    -moz-box-shadow:    0px 0px 15px 1px #000;
+    -webkit-box-shadow: 0px 0px 15px 1px #000;
+    box-shadow:         0px 0px 15px 1px #000;
+  }
+
+  .map {
+    background-color: #eee;
+    height: 650px;
+  }
+
+  .welcome-input {
+    height: 40px;
+    width: 250px;
+    margin: 25px auto 0 auto;
+  }
+
+  .input {
+    margin: 20px auto 0 auto;
+  }
+
+  .welcome-submit {
+    font-size: 35px;
+    width: 175px;
+    height: 55px;
+    border-radius: 2px;
+    margin: 20px auto 5px auto;
+    position: static;
+  }
+
+  .submit {
+    margin: 15px auto 5px auto;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
