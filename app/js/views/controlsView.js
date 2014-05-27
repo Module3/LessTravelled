@@ -1,31 +1,29 @@
-var backbone = require('backbone');
+var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
-var hbs = require('handlebars');
-var Backbone.$ = $;
+Backbone.$ = $;
 
 
 
-var Controls = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   el: '.controls',
   initialize: function(){
     this.render();
   },
   render: function(){
-    var template = require('./templates/controlsViewTemplate');
+    var template = require('./templates/controls.hbs');
     $('#controls').html(template());
+    console.log('controls rendered');
     return this;
   },
   events: {
-    "click #submit" : "submit",
-    "click #advanced": "advanced"
+    "click .submit" : "submit",
+    "click .advanced-button": "advanced"
   },
   submit: function(){
-
+    console.log('click');
   },
   advanced: function(){
-
+    console.log('click');
   }
 });
-
-module.exports = Controls;
