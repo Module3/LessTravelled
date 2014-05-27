@@ -31,11 +31,19 @@
         zoom: 10
       };
       
+      
       map = new google.maps.Map(document.getElementById("map"), mapOptions);
       routeBoxer = new RouteBoxer();
-      //gmaps.ags.Config.proxyUrl = '/proxy/proxy.ashx';
       directionService = new google.maps.DirectionsService();
-      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });      
+      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });  
+
+      google.maps.event.addDomListener(window, 'resize', function() {
+        var relocate = new google.maps.LatLng(47.6797, -122.3331);
+        map.panTo(relocate);
+        map.setCenter(relocate);
+        //map.panTo(new google.maps.LatLng(47.6797, -122.3331));
+        
+      }); 
     }
     
     function route() {
@@ -55,8 +63,11 @@
       directionService.route(request, function(result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
           directionsRenderer.setDirections(result);
-          console.log(result.routes[0].overview_path[0]);
-          console.log(result.routes[0].overview_path.length);
+          //console.log(result.routes[0].overview_path[0]);
+          console.log(result);
+          console.log(result.routes[0].legs);
+          //console.log(result.routes[0].legs[0].steps[0].end_location);
+          
           var coordinates = new Array();
           var output = {};
           var polygon = new Array();
@@ -72,6 +83,8 @@
           */
 
           var vertices = result.routes[0].overview_path;
+          console.log("overview_path:")
+          console.log(result.routes[0].overview_path);
           for (var j = 0; j < vertices.length; j++) {
             //console.log(vertices[j]);
             var lngLat = new Array(vertices[j].A, vertices[j].k);
@@ -85,15 +98,13 @@
           output.value = JSON.stringify(geoJSON, null, '\t');
           //console.log(output.value);
 
-
-
           vertices2 = [];
           vertices2 = vertices.slice(0,40);
 
 
           vertices3 = [];
-          console.log(vertices.length);
-          var secondLength = Math.ceil(vertices.length / 42);
+          //console.log(vertices.length);
+          var secondLength = Math.ceil(vertices.length / 36);
           if (secondLength === 1) {
             secondLength = 2;
           }
@@ -108,13 +119,9 @@
           vertices3.push(vertices[vertices.length - 1]);
           console.log(vertices3);
 
-
-          //console.log(vertices2);
           var myLine2 = new google.maps.Polyline({
               map: map,
               path: vertices3,
-              //console.log(myPath);
-              //console.log(vertices);
               strokeColor: '#ff0000'
           });
 
@@ -127,6 +134,8 @@
               unit: 9035,
               unionResults: false
           };
+          console.log("vertices array:");
+          console.log(vertices.length);
           var buffResult;
           svc.buffer(params, function(results, err) {
               if (!err) {
@@ -137,6 +146,8 @@
                   
                   var boxes = routeBoxer.box(path, distance);
                   drawBoxes(boxes);
+                  console.log("Number of boxes");
+                  console.log(boxes.length);
 
                   for (var i = 0; i < boxes.length; i++) { 
                     var bounds = boxes[i]; 
@@ -145,7 +156,6 @@
                     // Perform search over this bounds 
                     var infowindow = new google.maps.InfoWindow();
                     var service = new google.maps.places.PlacesService(map);
-                    
 
                     var request = {
                       bounds: bounds,
@@ -180,6 +190,7 @@
                           }
                           infowindow.setContent(result.name);
                           infowindow.open(map, marker);
+                          console.log(result);
                         })
                       });
                     }
@@ -239,7 +250,7 @@
   </style>
   </head>
   <body onload="initialize();">
-    <div id="map" style="width: 512px; height: 400px;"></div>
+    <div id="map" style="width: 900px; height: 400px;"></div>
     <div id="controls">
     Box within at least
     <input type="text" id="distance" value="1" size="2">miles
