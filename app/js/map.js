@@ -5,6 +5,8 @@ var routeBoxer = null;
 var distance = null; // km
 var markers = [];
 
+var ResultsView = require('./views/resultsView');
+
 module.exports.initialize = function() {
   console.log('map initialized');
   var mapOptions = {
@@ -45,7 +47,6 @@ function clearMarkers() {
 }
 
 module.exports.route= function() {
-  console.log('route called');
   clearBoxes();
   clearMarkers();
 
@@ -57,7 +58,10 @@ module.exports.route= function() {
     travelMode: google.maps.DirectionsTravelMode.DRIVING
   }
 
+  var searchTerm = document.getElementById('search-term').value;
+
   directionService.route(placeRequest, function(result, status) {
+    var userKeyword;
     if (status == google.maps.DirectionsStatus.OK) {
       directionsRenderer.setDirections(result);
       
@@ -161,6 +165,8 @@ module.exports.route= function() {
     } else {
       alert("Directions query failed: " + status);
     }
+    console.log('map.js userKeyword= ' + userKeyword);
+    new ResultsView(result, searchTerm);
   });
 }
 
