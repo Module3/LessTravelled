@@ -5,7 +5,8 @@ var _ = require('underscore');
 var $ = require('jquery');
 Backbone.$ = $;
 
-var map = require ('../map');
+var map = require('../map');
+var ResultsView = require('./resultsView');
 
 
 

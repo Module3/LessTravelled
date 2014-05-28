@@ -115,6 +115,22 @@ p {
   border: 2px solid gray;
 }
 
+.resubmit {
+  background-color: #cc4400;
+  color: #eee;
+  font-size: 25px;
+  margin: 10px 0 5px 0;
+  outline-style: none;
+  width: 200px;
+  height: 45px;
+  border: none;
+  cursor: pointer;
+}
+
+.resubmit:hover {
+  background-color: #aa3300;
+}
+
 .submit {
   background-color: #cc4400;
   color: #eee;
@@ -188,6 +204,13 @@ p {
     margin-top: -4px;
   }
 
+  .resubmit {
+    margin:;
+    position: absolute;
+    top: 50px;
+    right: 35px;
+  }
+
   .submit {
     margin:;
     position: absolute;
@@ -241,6 +264,11 @@ p {
 
   .map {
     margin-top: 0;
+  }
+
+  .resubmit {
+    margin: 10px auto 5px auto;
+    position: static;
   }
 
   .submit {
@@ -304,6 +332,10 @@ p {
 
   .input {
     margin: 20px auto 0 auto;
+  }
+
+  .resubmit {
+    margin: 15px auto 5px auto;
   }
 
   .submit {
