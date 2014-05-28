@@ -27,9 +27,11 @@ module.exports = Backbone.View.extend({
   submit: function(e){
     e.preventDefault();
     map.route();
+    $('body').removeClass('welcome');
   },
   advanced: function(){
-    $('.welcome-advanced-controls').removeClass('hidden');
-    $('advanced-button').addClass('hidden');
+    $('body').removeClass('welcome');
+    $('.advanced-controls').toggleClass('hidden');
+    $('advanced-button').toggleClass('hidden');
   }
 });

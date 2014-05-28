@@ -8,8 +8,7 @@
 
 /////////////////////////////////////////*/
 
-.page,
-.welcome-page {
+.page {
   width: 100%;
   height: 750px;
 }
@@ -24,7 +23,6 @@
   text-decoration: underline;
 }
 
-.welcome-advanced-controls,
 .advanced-controls {
   background-color: #bbb;
   margin: 0;
@@ -36,7 +34,6 @@
   top: 305px;
 }
 
-.welcome-form-div,
 .form-div {
   height: 150px;
   width: 200px;
@@ -50,7 +47,6 @@ body {
   padding: 0;
 }
 
-.welcome-left,
 #left {
   width: 100%;
 }
@@ -63,12 +59,10 @@ p {
   font-size: 30px;
 }
 
-.welcome-right,
 #right {
   width: 100%;
 }
 
-.welcome-header,
 .header {
   width: 100%;
   height: 70px;
@@ -87,7 +81,6 @@ p {
   z-index: 1000;
 }
 
-.welcome-controls,
 .controls {
   height: 225px;
   width: 100%;
@@ -98,7 +91,6 @@ p {
   display: inline-block;
 }
 
-.welcome-map,
 .map {
   height: 440px;
   width: 100%;
@@ -106,7 +98,6 @@ p {
   display: inline-block;
 }
 
-.welcome-input,
 .input {
   height: 30px;
   width: 200px;
@@ -118,14 +109,12 @@ p {
   border: 2px solid #fff;
 }
 
-.welcome-input:focus,
 .input:focus {
   color: black;
   outline: none;
   border: 2px solid gray;
 }
 
-.welcome-submit,
 .submit {
   background-color: #cc4400;
   color: #eee;
@@ -138,12 +127,10 @@ p {
   cursor: pointer;
 }
 
-.welcome-submit:hover,
 .submit:hover {
   background-color: #aa3300;
 }
 
-#welcome-travelled,
 #travelled {
   color: #87CEFA;
 }
@@ -168,46 +155,39 @@ p {
     right: 105px;
   }
 
-  .welcome-advanced-controls,
   .advanced-controls {
     height: 145px;
     top: 245px;
   }
 
-  .welcome-form-div,
   .form-div  {
       width: 500px;
   }
 
-  .welcome-header,
   .header {
     height: 100px;
     line-height: 90px;
     font-size: 75px;
   }
 
-  .welcome-controls,
   .controls {
     height: 135px;
   }
 
-  .welcome-input,
   .input {
     margin: 10px 30px;
     float: left;
   }
 
-  .welcome-input:focus,
   .input:focus {
     color: black;
   }
 
-  .welcome-map,
   .map {
     height: 500px;
+    margin-top: -4px;
   }
 
-  .welcome-submit,
   .submit {
     margin:;
     position: absolute;
@@ -235,7 +215,6 @@ p {
 
 @media (min-width: 650px){
    
-  .welcome-page,
   .page {
     height: 700px;
     display: relative;
@@ -245,25 +224,25 @@ p {
     position: static;
   }
 
-  .welcome-form-div,
   .form-div {
     width: 650px;
   }
 
-  .welcome-header,
   .header {
     height: 100px;
     font-size: 90px;
     line-height: 90px;
   }
 
-  .welcome-input,
   .input {
     margin: 15px auto 0 auto;
     float: none;
   }
 
-  .welcome-submit,
+  .map {
+    margin-top: 0;
+  }
+
   .submit {
     margin: 10px auto 5px auto;
     position: static;
@@ -286,15 +265,8 @@ p {
 
 @media (min-width: 900px) {
 
-  .welcome-page {
-    height: 680px;
-    background-image: url('newyork.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-
   .advanced-button {
-    font-size: 20px;
+    display: none;
   }
 
   .advanced-controls {
@@ -304,46 +276,80 @@ p {
     display: block;
   }
 
-  .welcome-form-div {
-    width: 375px;
-  }
-
   .form-div {
     width: 100%;
     position: static;
     margin: 0;
   }
 
-  .welcome-left {
-    width: 50%;
-    height: 500px;
-    float: left;
-  }
-
-  #left {
+  .left {
     width: 30%;
     float: left;
   }
 
-  .welcome-right {
+  .right {
+    width: 70%;
+    float: right;
+  }
+
+  .controls {
+    height: 250px;
+    border-right: 1px solid gray;
+  }
+
+  .map {
+    background-color: #eee;
+    height: 650px;
+  }
+
+  .input {
+    margin: 20px auto 0 auto;
+  }
+
+  .submit {
+    margin: 15px auto 5px auto;
+  }
+
+  .welcome .advanced-button {
+    font-size: 20px;
+    display: block;
+  }
+
+  .welcome .advanced-controls {
+    display: none;
+  }
+
+  .welcome .page {
+    height: 680px;
+    background-image: url('newyork.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .welcome .form-div {
+    width: 375px;
+  }
+
+  .welcome .left {
+    width: 50%;
+    height: 500px;
+    float: left;
+  }
+
+  .welcome .right {
     width: 50%;
     height: 500px;
     float: right;
   }
-
-  #right {
-    width: 70%;
-    float: right;
-  }
   
-  .welcome-header {
+  .welcome .header {
     background: rgba(0, 0, 0, 0.55);
     -moz-box-shadow:    0px 0px 0px 0px #000;
     -webkit-box-shadow: 0px 0px 0px 0px #000;
     box-shadow:         0px 0px 0px 0px #000;
   }
 
-  .welcome-controls {
+  .welcome .controls {
     height: 400px;
     width: 375px;
     position: static;
@@ -357,12 +363,7 @@ p {
     box-shadow:         0px 0px 15px 1px #000;
   }
 
-  .controls {
-    height: 250px;
-    border-right: 1px solid gray;
-  }
-
-  .welcome-map {
+  .welcome .map {
     height: 400px;
     width: 375px;
     display: block;
@@ -375,32 +376,19 @@ p {
     box-shadow:         0px 0px 15px 1px #000;
   }
 
-  .map {
-    background-color: #eee;
-    height: 650px;
-  }
-
-  .welcome-input {
+  .welcome .input {
     height: 40px;
     width: 250px;
     margin: 25px auto 0 auto;
   }
 
-  .input {
-    margin: 20px auto 0 auto;
-  }
-
-  .welcome-submit {
+  .welcome .submit {
     font-size: 35px;
     width: 175px;
     height: 55px;
     border-radius: 2px;
     margin: 20px auto 5px auto;
     position: static;
-  }
-
-  .submit {
-    margin: 15px auto 5px auto;
   }
 
 }
