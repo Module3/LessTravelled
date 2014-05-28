@@ -12426,7 +12426,6 @@ module.exports = Backbone.View.extend({
   render: function(){
     var template = require('./templates/controls.hbs');
     $('#controls').html(template());
-    console.log('controls rendered');
     return this;
   },
   events: {
@@ -12435,11 +12434,11 @@ module.exports = Backbone.View.extend({
   },
   submit: function(e){
     e.preventDefault();
-    console.log('Submit clicked');
     map.route();
   },
   advanced: function(){
-    console.log('Advanced clicked');
+    $('.welcome-advanced-controls').removeClass('hidden');
+    $('advanced-button').addClass('hidden');
   }
 });
 
