@@ -52,10 +52,24 @@ module.exports.route= function() {
 
   distance = parseFloat(document.getElementById("distance").value);
   
-  var placeRequest = {
-    origin: document.getElementById("from").value,
-    destination: document.getElementById("to").value,
-    travelMode: google.maps.DirectionsTravelMode.DRIVING
+  if(document.getElementById('mode').value==="DRIVING"){
+    var placeRequest = {
+      origin: document.getElementById("from").value,
+      destination: document.getElementById("to").value,
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    }
+  } else if (document.getElementById('mode').value==="WALKING"){
+    var placeRequest = {
+      origin: document.getElementById("from").value,
+      destination: document.getElementById("to").value,
+      travelMode: google.maps.DirectionsTravelMode.WALKING
+    }
+  } else {
+    var placeRequest = {
+      origin: document.getElementById("from").value,
+      destination: document.getElementById("to").value,
+      travelMode: google.maps.DirectionsTravelMode.BICYCLING
+    }
   }
 
   var searchTerm = document.getElementById('search-term').value;
