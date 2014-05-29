@@ -6,11 +6,13 @@ var $ = require('jquery');
 Backbone.$ = $;
 
 var Controls = require('./views/controlsView');
+var Router = require('./routes/routes');
 
 $(function(){
 
-  var controls = new Controls();
-  console.log('app started.');
+  var router = new Router();
+
+  Backbone.history.start();
 
 });
 

@@ -21,7 +21,7 @@ module.exports = Backbone.View.extend({
     var destination = route.routes[0].legs[0].end_address;
     var template = require('./templates/results.hbs');
     $('.advanced-controls').addClass('hidden');
-    $('#controls').html(template({result1: origin, result2: destination, userInput: mapInput}));
+    $('#controls').html(template({result1: origin, result2: destination, userInput: mapInput, id: this.counter}));
     return this;
   },
   events: {
