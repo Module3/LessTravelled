@@ -12422,6 +12422,14 @@ module.exports = Backbone.View.extend({
   },
   submit: function(e){
     e.preventDefault();
+    if ($('#from').val()==='Start:' || ''){
+      alert('Please enter an origin');
+      return false;
+    }
+    if($('#to').val()==='End:' || ''){
+      alert('Please enter a destination');
+      return false;
+    }
     map.route();
     $('body').removeClass('welcome');
   },

@@ -26,19 +26,19 @@ module.exports.initialize = function() {
     map.panTo(relocate);
     map.setCenter(relocate);   
   }); 
-}
+};
 
 var clearBoxes= function() {
-  if (boxpolys != null) {
+  if (boxpolys !== null) {
     for (var i = 0; i < boxpolys.length; i++) {
       boxpolys[i].setMap(null);
     }
   }
   boxpolys = null;
-}
+};
 
 function clearMarkers() {
-  if (markers.length != 0)
+  if (markers.length !== 0)
     for (var i = 0; i < markers.length; i++ ) {
       markers[i].setMap(null);
     }
@@ -52,24 +52,25 @@ module.exports.route= function() {
 
   distance = parseFloat(document.getElementById("distance").value);
   
+  var placeRequest;
   if(document.getElementById('mode').value==="DRIVING"){
-    var placeRequest = {
+    placeRequest = {
       origin: document.getElementById("from").value,
       destination: document.getElementById("to").value,
       travelMode: google.maps.DirectionsTravelMode.DRIVING
-    }
+    };
   } else if (document.getElementById('mode').value==="WALKING"){
-    var placeRequest = {
+    placeRequest = {
       origin: document.getElementById("from").value,
       destination: document.getElementById("to").value,
       travelMode: google.maps.DirectionsTravelMode.WALKING
-    }
+    };
   } else {
-    var placeRequest = {
+    placeRequest = {
       origin: document.getElementById("from").value,
       destination: document.getElementById("to").value,
       travelMode: google.maps.DirectionsTravelMode.BICYCLING
-    }
+    };
   }
 
   var searchTerm = document.getElementById('search-term').value;
@@ -168,7 +169,7 @@ module.exports.route= function() {
                     infowindow.setContent(result.name);
                     infowindow.open(map, marker);
                     console.log(result);
-                  })
+                  });
                 });
               }
             } 
@@ -182,7 +183,7 @@ module.exports.route= function() {
     console.log('map.js userKeyword= ' + userKeyword);
     new ResultsView(result, searchTerm);
   });
-}
+};
 
 var drawBoxes= function(boxes) {
   boxpolys = new Array(boxes.length);
@@ -196,5 +197,5 @@ var drawBoxes= function(boxes) {
       map: map
     });
   }
-}
+};
   

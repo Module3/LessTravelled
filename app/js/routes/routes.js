@@ -19,5 +19,5 @@ module.exports = Backbone.Router.extend({
     console.log('index route called');
     var controls = new ControlsView();
   }
-})
+});
 
