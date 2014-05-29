@@ -12154,16 +12154,18 @@ var $ = require("./../bower_components/jquery/dist/jquery.js");
 Backbone.$ = $;
 
 var Controls = require('./views/controlsView');
+var Router = require('./routes/routes');
 
 $(function(){
 
-  var controls = new Controls();
-  console.log('app started.');
+  var router = new Router();
+
+  Backbone.history.start();
 
 });
 
 
-},{"./../bower_components/backbone/backbone.js":1,"./../bower_components/jquery/dist/jquery.js":2,"./../bower_components/underscore/underscore.js":3,"./views/controlsView":6}],5:[function(require,module,exports){
+},{"./../bower_components/backbone/backbone.js":1,"./../bower_components/jquery/dist/jquery.js":2,"./../bower_components/underscore/underscore.js":3,"./routes/routes":6,"./views/controlsView":7}],5:[function(require,module,exports){
 
 var map = null;
 var boxpolys = null;
@@ -12218,10 +12220,24 @@ module.exports.route= function() {
 
   distance = parseFloat(document.getElementById("distance").value);
   
-  var placeRequest = {
-    origin: document.getElementById("from").value,
-    destination: document.getElementById("to").value,
-    travelMode: google.maps.DirectionsTravelMode.DRIVING
+  if(document.getElementById('mode').value==="DRIVING"){
+    var placeRequest = {
+      origin: document.getElementById("from").value,
+      destination: document.getElementById("to").value,
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    }
+  } else if (document.getElementById('mode').value==="WALKING"){
+    var placeRequest = {
+      origin: document.getElementById("from").value,
+      destination: document.getElementById("to").value,
+      travelMode: google.maps.DirectionsTravelMode.WALKING
+    }
+  } else {
+    var placeRequest = {
+      origin: document.getElementById("from").value,
+      destination: document.getElementById("to").value,
+      travelMode: google.maps.DirectionsTravelMode.BICYCLING
+    }
   }
 
   var searchTerm = document.getElementById('search-term').value;
@@ -12351,7 +12367,32 @@ var drawBoxes= function(boxes) {
 }
   
 
-},{"./views/resultsView":7}],6:[function(require,module,exports){
+},{"./views/resultsView":8}],6:[function(require,module,exports){
+'use strict'
+
+var Backbone = require("./../../bower_components/backbone/backbone.js");
+var _ = require("./../../bower_components/underscore/underscore.js");
+var $ = require("./../../bower_components/jquery/dist/jquery.js");
+Backbone.$ = $;
+
+var map = require('../map');
+var ControlsView = require('../views/controlsView');
+
+module.exports = Backbone.Router.extend({
+  routes: {
+    "": "index"
+  },
+  initialize: function(){
+    console.log('router initialized');
+  },
+  index: function(){
+    console.log('index route called');
+    var controls = new ControlsView();
+  }
+})
+
+
+},{"../map":5,"../views/controlsView":7,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3}],7:[function(require,module,exports){
 'use strict'
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12391,7 +12432,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./resultsView":7,"./templates/controls.hbs":8}],7:[function(require,module,exports){
+},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./resultsView":8,"./templates/controls.hbs":9}],8:[function(require,module,exports){
 'use strict'
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12407,7 +12448,6 @@ var controlsView = require('./controlsView');
 module.exports = Backbone.View.extend({
   el: '#controls',
   initialize: function(mapResult, mapInput){
-    console.log('initialize mapInput= ' + mapInput);
     this.render(mapResult, mapInput);
   },
   render: function(mapResult, mapInput){
@@ -12415,7 +12455,8 @@ module.exports = Backbone.View.extend({
     var origin = route.routes[0].legs[0].start_address;
     var destination = route.routes[0].legs[0].end_address;
     var template = require('./templates/results.hbs');
-    $('#controls').html(template({result1: origin, result2: destination, userInput: mapInput}));
+    $('.advanced-controls').addClass('hidden');
+    $('#controls').html(template({result1: origin, result2: destination, userInput: mapInput, id: this.counter}));
     return this;
   },
   events: {
@@ -12427,7 +12468,7 @@ module.exports = Backbone.View.extend({
     $('body').removeClass('welcome');
   }
 });
-},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":6,"./templates/results.hbs":9}],8:[function(require,module,exports){
+},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":7,"./templates/results.hbs":10}],9:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -12439,7 +12480,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<div class='form-div'>\n  <form class='form'>\n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='submit'>SEARCH</button>\n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
   });
 
-},{"hbsfy/runtime":17}],9:[function(require,module,exports){
+},{"hbsfy/runtime":18}],10:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -12460,11 +12501,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (helper = helpers.userInput) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.userInput); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='resubmit'>NEW SEARCH</button>\n  </form>\n</div>";
+  buffer += "\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='resubmit'>NEW SEARCH</button>\n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
   return buffer;
   });
 
-},{"hbsfy/runtime":17}],10:[function(require,module,exports){
+},{"hbsfy/runtime":18}],11:[function(require,module,exports){
 "use strict";
 /*globals Handlebars: true */
 var base = require("./handlebars/base");
@@ -12497,7 +12538,7 @@ var Handlebars = create();
 Handlebars.create = create;
 
 exports["default"] = Handlebars;
-},{"./handlebars/base":11,"./handlebars/exception":12,"./handlebars/runtime":13,"./handlebars/safe-string":14,"./handlebars/utils":15}],11:[function(require,module,exports){
+},{"./handlebars/base":12,"./handlebars/exception":13,"./handlebars/runtime":14,"./handlebars/safe-string":15,"./handlebars/utils":16}],12:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -12678,7 +12719,7 @@ exports.log = log;var createFrame = function(object) {
   return obj;
 };
 exports.createFrame = createFrame;
-},{"./exception":12,"./utils":15}],12:[function(require,module,exports){
+},{"./exception":13,"./utils":16}],13:[function(require,module,exports){
 "use strict";
 
 var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
@@ -12707,7 +12748,7 @@ function Exception(message, node) {
 Exception.prototype = new Error();
 
 exports["default"] = Exception;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -12845,7 +12886,7 @@ exports.program = program;function invokePartial(partial, name, context, helpers
 exports.invokePartial = invokePartial;function noop() { return ""; }
 
 exports.noop = noop;
-},{"./base":11,"./exception":12,"./utils":15}],14:[function(require,module,exports){
+},{"./base":12,"./exception":13,"./utils":16}],15:[function(require,module,exports){
 "use strict";
 // Build out our basic SafeString type
 function SafeString(string) {
@@ -12857,7 +12898,7 @@ SafeString.prototype.toString = function() {
 };
 
 exports["default"] = SafeString;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 /*jshint -W004 */
 var SafeString = require("./safe-string")["default"];
@@ -12934,12 +12975,12 @@ exports.escapeExpression = escapeExpression;function isEmpty(value) {
 }
 
 exports.isEmpty = isEmpty;
-},{"./safe-string":14}],16:[function(require,module,exports){
+},{"./safe-string":15}],17:[function(require,module,exports){
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
 module.exports = require('./dist/cjs/handlebars.runtime');
 
-},{"./dist/cjs/handlebars.runtime":10}],17:[function(require,module,exports){
+},{"./dist/cjs/handlebars.runtime":11}],18:[function(require,module,exports){
 module.exports = require("handlebars/runtime")["default"];
 
-},{"handlebars/runtime":16}]},{},[4,5,6,7])
+},{"handlebars/runtime":17}]},{},[4,5,6,7,8])
