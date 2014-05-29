@@ -29,6 +29,14 @@ module.exports = Backbone.View.extend({
   },
   newSearch: function(e){
     e.preventDefault();
+    if ($('#from').val()==='Start:' || ''){
+      alert('Please enter a "Start:" location');
+      return false;
+    }
+    if($('#to').val()==='End:' || ''){
+      alert('Please enter an "End:" location');
+      return false;
+    }
     map.route();
     $('body').removeClass('welcome');
   }
