@@ -8,6 +8,11 @@
 
 /////////////////////////////////////////*/
 
+
+a {
+  text-decoration: none;
+}
+
 .page {
   width: 100%;
   height: 750px;
@@ -29,7 +34,7 @@
   padding: 0;
   clear: left;
   width: 100%;
-  height: 445px;
+  height: 210px;
   position: absolute;
   top: 305px;
 }
@@ -52,11 +57,11 @@ body {
 }
 
 p {
-  margin: 5px 0 0 20px;
-  font-family: 'Lato' sans-serif;
+  margin: 20px 10px 0 20px;
+  font-family: 'Ariel' sans-serif;
   font-weight: 100;
   color: gray;
-  font-size: 30px;
+  font-size: 25px;
 }
 
 #right {
@@ -131,6 +136,17 @@ p {
   background-color: #aa3300;
 }
 
+.select {
+  outline: none;
+  border: none;
+  background-color: #FFF;
+  color: silver;
+  font-family: 'Ariel' sans-serif;
+  font-weight: 100;
+  font-size: 25px;
+  margin-left: 20px;
+}
+
 .submit {
   background-color: #cc4400;
   color: #eee;
@@ -172,7 +188,7 @@ p {
   }
 
   .advanced-controls {
-    height: 145px;
+    height: 215px;
     top: 245px;
   }
 
