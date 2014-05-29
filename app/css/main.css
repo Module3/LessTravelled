@@ -346,12 +346,20 @@ p {
     height: 650px;
   }
 
+  p {
+    padding-top: 10px;
+  }
+
   .input {
     margin: 20px auto 0 auto;
   }
 
   .resubmit {
     margin: 15px auto 5px auto;
+  }
+
+  .select {
+    margin-top: 7px;
   }
 
   .submit {

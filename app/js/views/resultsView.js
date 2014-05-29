@@ -13,7 +13,6 @@ var controlsView = require('./controlsView');
 module.exports = Backbone.View.extend({
   el: '#controls',
   initialize: function(mapResult, mapInput){
-    console.log('initialize mapInput= ' + mapInput);
     this.render(mapResult, mapInput);
   },
   render: function(mapResult, mapInput){
@@ -21,6 +20,7 @@ module.exports = Backbone.View.extend({
     var origin = route.routes[0].legs[0].start_address;
     var destination = route.routes[0].legs[0].end_address;
     var template = require('./templates/results.hbs');
+    $('.advanced-controls').addClass('hidden');
     $('#controls').html(template({result1: origin, result2: destination, userInput: mapInput}));
     return this;
   },
