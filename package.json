@@ -1,0 +1,47 @@
+{
+  "name": "LessTravelled",
+  "version": "0.0.1",
+  "description": "A map app using Google maps API on an Express Server.",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Module3/LessTravelled.git"
+  },
+  "author": "Jeff Adelman, Lucas Cotner, Denis Zdonov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Module3/LessTravelled/issues"
+  },
+  "homepage": "https://github.com/Module3/LessTravelled",
+  "dependencies": {
+    "express": "^4.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "browserify": "^4.1.3",
+    "chai": "^1.9.1",
+    "debowerify": "^0.7.1",
+    "globule": "^0.2.0",
+    "grunt-casper": "^0.3.8",
+    "grunt-browserify": "^2.1.0",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-express-server": "^0.4.17",
+    "grunt-shell-spawn": "^0.3.0",
+    "grunt-simple-mocha": "^0.4.0",
+    "handlebars": "^1.3.0",
+    "hbsfy": "^1.3.2",
+    "matchdep": "^0.3.0",
+    "mocha": "^1.18.2",
+    "superagent": "^0.18.0"
+  }
+}

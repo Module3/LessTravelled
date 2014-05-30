@@ -1,0 +1,33 @@
+{
+  "name": "LessTravelled",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Module3/LessTravelled",
+  "authors": [
+    "Jeff Adelman",
+    "Lucas Cotner",
+    "Denis Zdonov"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "underscore": "~1.6.0",
+    "jquery": "~2.1.1",
+    "modernizr": "~2.8.2",
+    "requirejs": "~2.1.13"
+  },
+  "devDependencies": {
+    "sinonjs": "~1.9.1",
+    "jasmine": "~2.0.0",
+    "mocha": "~1.20.0",
+    "chai": "~1.9.1",
+    "sinon-chai": "~2.5.0"
+  }
+}

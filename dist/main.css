@@ -1,0 +1,462 @@
+.hidden {
+  display: none;
+}
+
+/*/////////////////////////////////////////
+
+//Mobile//
+
+/////////////////////////////////////////*/
+
+
+a {
+  text-decoration: none;
+}
+
+.page {
+  width: 100%;
+  height: 750px;
+}
+
+.advanced-button {
+  margin: 0;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.advanced-button:hover {
+  text-decoration: underline;
+}
+
+.advanced-controls {
+  background-color: #bbb;
+  margin: 0;
+  padding: 0;
+  clear: left;
+  width: 100%;
+  height: 210px;
+  position: absolute;
+  top: 305px;
+}
+
+.form-div {
+  height: 150px;
+  width: 200px;
+  overflow: none;
+  margin: 0 auto 0 auto;
+  position: relative;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#left {
+  width: 100%;
+}
+
+p {
+  margin: 20px 10px 0 20px;
+  font-family: 'Ariel' sans-serif;
+  font-weight: 100;
+  color: gray;
+  font-size: 25px;
+}
+
+#right {
+  width: 100%;
+}
+
+.header {
+  width: 100%;
+  height: 70px;
+  text-align: center;
+  font-size: 4em;
+  line-height: 65px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+  color: white;
+  background-color: #eee;
+  display: inline-block;
+  -moz-box-shadow:    1px 0px 15px 1px #000;
+  -webkit-box-shadow: 1px 0px 15px 1px #000;
+  box-shadow:         1px 0px 15px 1px #000;
+  position: relative;
+  z-index: 1000;
+}
+
+.controls {
+  height: 225px;
+  width: 100%;
+  position: relative;
+  padding-top: 10px;
+  background-color: #eee;
+  text-align: center;
+  display: inline-block;
+}
+
+.map {
+  height: 440px;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+}
+
+.input {
+  height: 30px;
+  width: 200px;
+  color: #bbb;
+  margin: 10px auto 0 auto;
+  font-size: 20px;
+  border-radius: 2px;
+  outline: none;
+  border: 2px solid #fff;
+}
+
+.input:focus {
+  color: black;
+  outline: none;
+  border: 2px solid gray;
+}
+
+.resubmit {
+  background-color: #cc4400;
+  color: #eee;
+  font-size: 25px;
+  margin: 10px 0 5px 0;
+  outline-style: none;
+  width: 200px;
+  height: 45px;
+  border: none;
+  cursor: pointer;
+}
+
+.resubmit:hover {
+  background-color: #aa3300;
+}
+
+.select {
+  outline: none;
+  border: none;
+  background-color: #FFF;
+  color: silver;
+  font-family: 'Ariel' sans-serif;
+  font-weight: 100;
+  font-size: 25px;
+  margin-left: 20px;
+}
+
+.submit {
+  background-color: #cc4400;
+  color: #eee;
+  font-size: 25px;
+  margin: 10px 0 5px 0;
+  outline-style: none;
+  width: 150px;
+  height: 45px;
+  border: none;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #aa3300;
+}
+
+#travelled {
+  color: #87CEFA;
+}
+
+
+
+
+
+
+/*///////////////////////////////////////
+
+//Small Tablet//
+
+////////////////////////////////////////*/
+
+
+@media (min-width: 500px){
+
+  .advanced-button {
+    position: absolute;
+    top: 105px;
+    right: 105px;
+  }
+
+  .advanced-controls {
+    height: 215px;
+    top: 245px;
+  }
+
+  .form-div  {
+      width: 500px;
+  }
+
+  .header {
+    height: 100px;
+    line-height: 90px;
+    font-size: 75px;
+  }
+
+  .controls {
+    height: 135px;
+  }
+
+  .input {
+    margin: 10px 30px;
+    float: left;
+  }
+
+  .input:focus {
+    color: black;
+  }
+
+  .map {
+    height: 500px;
+    margin-top: -4px;
+  }
+
+  .resubmit {
+    margin:;
+    position: absolute;
+    top: 50px;
+    right: 35px;
+  }
+
+  .submit {
+    margin:;
+    position: absolute;
+    top: 50px;
+    right: 60px;
+  }
+
+  /*This size only*/
+  #search-term {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    }
+  }
+
+
+
+
+/*////////////////////////////////////////
+
+//Large/Horizontal Tablet//
+
+////////////////////////////////////////*/
+
+
+@media (min-width: 650px){
+   
+  .page {
+    height: 700px;
+    display: relative;
+  }
+
+  .advanced-button {
+    position: static;
+  }
+
+  .form-div {
+    width: 650px;
+  }
+
+  .header {
+    height: 100px;
+    font-size: 90px;
+    line-height: 90px;
+  }
+
+  .input {
+    margin: 15px auto 0 auto;
+    float: none;
+  }
+
+  .map {
+    margin-top: 0;
+  }
+
+  .resubmit {
+    margin: 10px auto 5px auto;
+    position: static;
+  }
+
+  .submit {
+    margin: 10px auto 5px auto;
+    position: static;
+  }
+
+  #search-term {
+    position: static;
+  }
+
+
+
+
+
+/*////////////////////////////////////////
+
+//Laptop/Desktop//
+
+/////////////////////////////////////////*/
+
+
+@media (min-width: 900px) {
+
+  .advanced-button {
+    display: none;
+  }
+
+  .advanced-controls {
+    height: 390px;
+    width: 30%;
+    position: static;
+    display: block;
+  }
+
+  .form-div {
+    width: 100%;
+    position: static;
+    margin: 0;
+  }
+
+  .left {
+    width: 30%;
+    float: left;
+  }
+
+  .right {
+    width: 70%;
+    float: right;
+  }
+
+  .controls {
+    height: 250px;
+    border-right: 1px solid gray;
+  }
+
+  .map {
+    background-color: #eee;
+    height: 650px;
+  }
+
+  p {
+    padding-top: 10px;
+  }
+
+  .input {
+    margin: 20px auto 0 auto;
+  }
+
+  .resubmit {
+    margin: 15px auto 5px auto;
+  }
+
+  .select {
+    margin-top: 7px;
+  }
+
+  .submit {
+    margin: 15px auto 5px auto;
+  }
+
+  .welcome .advanced-button {
+    font-size: 20px;
+    display: block;
+  }
+
+  .welcome .advanced-controls {
+    display: none;
+  }
+
+  .welcome .page {
+    height: 680px;
+    background-image: url('newyork.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .welcome .form-div {
+    width: 375px;
+  }
+
+  .welcome .left {
+    width: 50%;
+    height: 500px;
+    float: left;
+  }
+
+  .welcome .right {
+    width: 50%;
+    height: 500px;
+    float: right;
+  }
+  
+  .welcome .header {
+    background: rgba(0, 0, 0, 0.55);
+    -moz-box-shadow:    0px 0px 0px 0px #000;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow:         0px 0px 0px 0px #000;
+  }
+
+  .welcome .controls {
+    height: 400px;
+    width: 375px;
+    position: static;
+    display: block;
+    padding-top: 0;
+    margin: 80px auto;
+    border-radius: 2px;
+    border: 1px solid gray;
+    -moz-box-shadow:    0px 0px 15px 1px #000;
+    -webkit-box-shadow: 0px 0px 15px 1px #000;
+    box-shadow:         0px 0px 15px 1px #000;
+  }
+
+  .welcome .map {
+    height: 400px;
+    width: 375px;
+    display: block;
+    margin: 80px auto;
+    background-color: #eee;
+    border-radius: 2px;
+    border: 1px solid gray;
+    -moz-box-shadow:    0px 0px 15px 1px #000;
+    -webkit-box-shadow: 0px 0px 15px 1px #000;
+    box-shadow:         0px 0px 15px 1px #000;
+  }
+
+  .welcome .input {
+    height: 40px;
+    width: 250px;
+    margin: 25px auto 0 auto;
+  }
+
+  .welcome .submit {
+    font-size: 35px;
+    width: 175px;
+    height: 55px;
+    border-radius: 2px;
+    margin: 20px auto 5px auto;
+    position: static;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
