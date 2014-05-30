@@ -1,8 +1,6 @@
 var ResultsView = require('./views/resultsView');
-var R1 = require('./recurse').recurseSuperFast;
-var R2 = require('./recurse').recurseFast;
 var PC = require('./pathChunker');
-var W  = require('./wrapperMod');
+var RUN = require('./recurseRunner');
 var _ = require('underscore');
 
   var map = null;
@@ -14,12 +12,11 @@ var _ = require('underscore');
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoom: 10
       };
-    
-      map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      
-      directionService = new google.maps.DirectionsService();
-      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });  
 
+      map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+      directionService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
 
       var input = document.getElementById('from');
       var input2 = document.getElementById('to');
@@ -54,7 +51,7 @@ var _ = require('underscore');
           map.setZoom(16);
        }
       });
-    }
+    };
 
     var clearMarkers = function() {
         for (var i = 0; i < markers.length; i++ ) {
@@ -62,11 +59,10 @@ var _ = require('underscore');
         }
       markers = null;
       markers = [];
-    } 
-    
+    };
+
     module.exports.route = function() {
       clearMarkers();
-
       distance = parseFloat(document.getElementById("distance").value);
 
       var placeRequest;
@@ -96,63 +92,12 @@ var _ = require('underscore');
         var userKeyword;
         if (status == google.maps.DirectionsStatus.OK) {
           directionsRenderer.setDirections(result);
-
           var pathChunks = PC.pathChunker(result);
-
-          midPoint1 = Math.ceil(pathChunks.length/5);
-          midPoint2 = Math.ceil(pathChunks.length/5*2);
-          midPoint3 = Math.ceil(pathChunks.length/5*3);
-          midPoint4 = Math.ceil(pathChunks.length/5*4);
-
-          var r1 = new R1();
-          var r2 = new R2();
-    
-          r1.recurseSuperFast(0, midPoint1, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint1, midPoint2, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint2, midPoint3, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint3, midPoint4, function(num) {
-            console.log("recurseSuperFast 3 step #: " + num);
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint4, pathChunks.length, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-
-          });
-          r2.recurseFast(0, midPoint1, function(num) {
-            console.log("recurseFast 1 step #: " + num);
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint1, midPoint2, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint2, midPoint3, function(num) {
-            console.log("recurseFast 3 step #: " + num);
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint3, midPoint4, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint4, pathChunks.length, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
+          RUN.recurseRunner(pathChunks, map, markers);
 
         } else {
           alert("Directions query failed: " + status);
         }
         new ResultsView(result, searchTerm);
       });
-    }
+    };

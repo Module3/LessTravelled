@@ -7,9 +7,9 @@ module.exports.recurseSuperFast = function() {
 
 		var that = this;
 		setTimeout(function() {
-		  callback(num);
-		  num += 8;
-		  that.recurseSuperFast(num, max, callback)
+			callback(num);
+			num += 8;
+			that.recurseSuperFast(num, max, callback);
 		}, 0);
 	};
 	return r1;

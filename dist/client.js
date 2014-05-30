@@ -12165,12 +12165,10 @@ $(function(){
 });
 
 
-},{"./../bower_components/backbone/backbone.js":1,"./../bower_components/jquery/dist/jquery.js":2,"./../bower_components/underscore/underscore.js":3,"./routes/routes":8,"./views/controlsView":9}],5:[function(require,module,exports){
+},{"./../bower_components/backbone/backbone.js":1,"./../bower_components/jquery/dist/jquery.js":2,"./../bower_components/underscore/underscore.js":3,"./routes/routes":9,"./views/controlsView":10}],5:[function(require,module,exports){
 var ResultsView = require('./views/resultsView');
-var R1 = require('./recurse').recurseSuperFast;
-var R2 = require('./recurse').recurseFast;
 var PC = require('./pathChunker');
-var W  = require('./wrapperMod');
+var RUN = require('./recurseRunner');
 var _ = require("./../bower_components/underscore/underscore.js");
 
   var map = null;
@@ -12182,12 +12180,11 @@ var _ = require("./../bower_components/underscore/underscore.js");
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoom: 10
       };
-    
-      map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      
-      directionService = new google.maps.DirectionsService();
-      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });  
 
+      map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+      directionService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
 
       var input = document.getElementById('from');
       var input2 = document.getElementById('to');
@@ -12222,7 +12219,7 @@ var _ = require("./../bower_components/underscore/underscore.js");
           map.setZoom(16);
        }
       });
-    }
+    };
 
     var clearMarkers = function() {
         for (var i = 0; i < markers.length; i++ ) {
@@ -12230,11 +12227,10 @@ var _ = require("./../bower_components/underscore/underscore.js");
         }
       markers = null;
       markers = [];
-    } 
-    
+    };
+
     module.exports.route = function() {
       clearMarkers();
-
       distance = parseFloat(document.getElementById("distance").value);
 
       var placeRequest;
@@ -12264,67 +12260,17 @@ var _ = require("./../bower_components/underscore/underscore.js");
         var userKeyword;
         if (status == google.maps.DirectionsStatus.OK) {
           directionsRenderer.setDirections(result);
-
           var pathChunks = PC.pathChunker(result);
-
-          midPoint1 = Math.ceil(pathChunks.length/5);
-          midPoint2 = Math.ceil(pathChunks.length/5*2);
-          midPoint3 = Math.ceil(pathChunks.length/5*3);
-          midPoint4 = Math.ceil(pathChunks.length/5*4);
-
-          var r1 = new R1();
-          var r2 = new R2();
-    
-          r1.recurseSuperFast(0, midPoint1, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint1, midPoint2, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint2, midPoint3, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint3, midPoint4, function(num) {
-            console.log("recurseSuperFast 3 step #: " + num);
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r1.recurseSuperFast(midPoint4, pathChunks.length, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-
-          });
-          r2.recurseFast(0, midPoint1, function(num) {
-            console.log("recurseFast 1 step #: " + num);
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint1, midPoint2, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint2, midPoint3, function(num) {
-            console.log("recurseFast 3 step #: " + num);
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint3, midPoint4, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
-
-          r2.recurseFast(midPoint4, pathChunks.length, function(num) {
-            W.wrapper(num, pathChunks, map, markers);
-          });
+          RUN.recurseRunner(pathChunks, map, markers);
 
         } else {
           alert("Directions query failed: " + status);
         }
         new ResultsView(result, searchTerm);
       });
-    }
-},{"./../bower_components/underscore/underscore.js":3,"./pathChunker":6,"./recurse":7,"./views/resultsView":10,"./wrapperMod":13}],6:[function(require,module,exports){
+    };
+
+},{"./../bower_components/underscore/underscore.js":3,"./pathChunker":6,"./recurseRunner":8,"./views/resultsView":11}],6:[function(require,module,exports){
 module.exports.pathChunker = function(result) {
   var masterPath = [];
   for (i = 0; i < result.routes[0].legs[0].steps.length; i++) {
@@ -12387,6 +12333,65 @@ return r2;
 };
 
 },{}],8:[function(require,module,exports){
+var R1 = require('./recurse').recurseSuperFast;
+var R2 = require('./recurse').recurseFast;
+var W  = require('./wrapperMod');
+
+module.exports.recurseRunner = function(pathChunks, map, markers) {
+
+  midPoint1 = Math.ceil(pathChunks.length/5);
+  midPoint2 = Math.ceil(pathChunks.length/5*2);
+  midPoint3 = Math.ceil(pathChunks.length/5*3);
+  midPoint4 = Math.ceil(pathChunks.length/5*4);
+
+  var r1 = new R1();
+  var r2 = new R2();
+
+  r1.recurseSuperFast(0, midPoint1, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint1, midPoint2, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint2, midPoint3, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint3, midPoint4, function(num) {
+    console.log("recurseSuperFast 3 step #: " + num);
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint4, pathChunks.length, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+
+  });
+  r2.recurseFast(0, midPoint1, function(num) {
+    console.log("recurseFast 1 step #: " + num);
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint1, midPoint2, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint2, midPoint3, function(num) {
+    console.log("recurseFast 3 step #: " + num);
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint3, midPoint4, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint4, pathChunks.length, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+};
+
+},{"./recurse":7,"./wrapperMod":14}],9:[function(require,module,exports){
 'use strict';
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12411,7 +12416,7 @@ module.exports = Backbone.Router.extend({
 });
 
 
-},{"../map":5,"../views/controlsView":9,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3}],9:[function(require,module,exports){
+},{"../map":5,"../views/controlsView":10,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3}],10:[function(require,module,exports){
 'use strict';
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12459,7 +12464,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./resultsView":10,"./templates/controls.hbs":11}],10:[function(require,module,exports){
+},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./resultsView":11,"./templates/controls.hbs":12}],11:[function(require,module,exports){
 'use strict';
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12503,7 +12508,7 @@ module.exports = Backbone.View.extend({
     $('body').removeClass('welcome');
   }
 });
-},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":9,"./templates/results.hbs":12}],11:[function(require,module,exports){
+},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":10,"./templates/results.hbs":13}],12:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -12515,7 +12520,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<div class='form-div'>\n  <form class='form'>\n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='submit'>SEARCH</button>\n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
   });
 
-},{"hbsfy/runtime":21}],12:[function(require,module,exports){
+},{"hbsfy/runtime":22}],13:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -12540,7 +12545,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   });
 
-},{"hbsfy/runtime":21}],13:[function(require,module,exports){
+},{"hbsfy/runtime":22}],14:[function(require,module,exports){
 //module.exports.recurseSuperFast = function() {
 
 
@@ -12644,7 +12649,7 @@ module.exports.wrapper = function(count, pathChunks, map, markers) {
     });
   
 }
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 /*globals Handlebars: true */
 var base = require("./handlebars/base");
@@ -12677,7 +12682,7 @@ var Handlebars = create();
 Handlebars.create = create;
 
 exports["default"] = Handlebars;
-},{"./handlebars/base":15,"./handlebars/exception":16,"./handlebars/runtime":17,"./handlebars/safe-string":18,"./handlebars/utils":19}],15:[function(require,module,exports){
+},{"./handlebars/base":16,"./handlebars/exception":17,"./handlebars/runtime":18,"./handlebars/safe-string":19,"./handlebars/utils":20}],16:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -12858,7 +12863,7 @@ exports.log = log;var createFrame = function(object) {
   return obj;
 };
 exports.createFrame = createFrame;
-},{"./exception":16,"./utils":19}],16:[function(require,module,exports){
+},{"./exception":17,"./utils":20}],17:[function(require,module,exports){
 "use strict";
 
 var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
@@ -12887,7 +12892,7 @@ function Exception(message, node) {
 Exception.prototype = new Error();
 
 exports["default"] = Exception;
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -13025,7 +13030,7 @@ exports.program = program;function invokePartial(partial, name, context, helpers
 exports.invokePartial = invokePartial;function noop() { return ""; }
 
 exports.noop = noop;
-},{"./base":15,"./exception":16,"./utils":19}],18:[function(require,module,exports){
+},{"./base":16,"./exception":17,"./utils":20}],19:[function(require,module,exports){
 "use strict";
 // Build out our basic SafeString type
 function SafeString(string) {
@@ -13037,7 +13042,7 @@ SafeString.prototype.toString = function() {
 };
 
 exports["default"] = SafeString;
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 /*jshint -W004 */
 var SafeString = require("./safe-string")["default"];
@@ -13114,12 +13119,12 @@ exports.escapeExpression = escapeExpression;function isEmpty(value) {
 }
 
 exports.isEmpty = isEmpty;
-},{"./safe-string":18}],20:[function(require,module,exports){
+},{"./safe-string":19}],21:[function(require,module,exports){
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
 module.exports = require('./dist/cjs/handlebars.runtime');
 
-},{"./dist/cjs/handlebars.runtime":14}],21:[function(require,module,exports){
+},{"./dist/cjs/handlebars.runtime":15}],22:[function(require,module,exports){
 module.exports = require("handlebars/runtime")["default"];
 
-},{"handlebars/runtime":20}]},{},[4,5,6,7,8,9,10,13])
+},{"handlebars/runtime":21}]},{},[4,5,6,7,8,9,10,11,14])
