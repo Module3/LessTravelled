@@ -1,39 +1,13 @@
 var ResultsView = require('./views/resultsView');
+var R1 = require('./recurse').recurseSuperFast;
+var R2 = require('./recurse').recurseFast;
+
+var _ = require('underscore');
 
   var map = null;
   var markers = [];
 
 
-
-    function recurseSuperFast(num, max, callback) {
-      if (num >= max) {
-        return false;
-      }
-      setTimeout(function() {
-        //console.log(callback);
-        callback(num);
-
-        num += 8;
-
-        recurseSuperFast(num, max, callback);
-      }, 0);
-    }
-
-    function recurseFast(num, max, callback) {
-      if (num >= max) {
-          return false;
-      }
-
-      setTimeout(function() {
-        //console.log(callback);
-        callback(num);
-
-        num += 2;
-
-        recurseFast(num, max, callback);
-      }, 0);
-    }
-  
     module.exports.initialize = function() {
       var mapOptions = {
         center: new google.maps.LatLng(47.6797, -122.3331),
@@ -123,19 +97,6 @@ var ResultsView = require('./views/resultsView');
         var userKeyword;
         if (status == google.maps.DirectionsStatus.OK) {
           directionsRenderer.setDirections(result);
-          //directionsRenderer.setMap(map);
-          //google.maps.event.addListener(submitButton, 'onclick', function() {
-            //map.fitBounds(new google.maps.LatLng(47.6797, -122.3331));
-          //});
-          
-          var coordinates = new Array();
-          var output = {};
-          var polygon = new Array();
-
-          //var polyOptions = {
-            //strokeColor: "red",
-            //strokeWeight: 0
-          //}
 
           var vertices = result.routes[0].overview_path;
           var masterPath = [];
@@ -169,50 +130,50 @@ var ResultsView = require('./views/resultsView');
           midPoint2 = Math.ceil(pathChunks.length/5*2);
           midPoint3 = Math.ceil(pathChunks.length/5*3);
           midPoint4 = Math.ceil(pathChunks.length/5*4);
+
+          var r1 = new R1();
+          var r2 = new R2();
     
-          recurseSuperFast(0, midPoint1, function(num) {
+          r1.recurseSuperFast(0, midPoint1, function(num) {
             wrapper(num);
           });
 
-
-          recurseSuperFast(midPoint1, midPoint2, function(num) {
+          r1.recurseSuperFast(midPoint1, midPoint2, function(num) {
             wrapper(num);
           });
 
-
-          recurseSuperFast(midPoint2, midPoint3, function(num) {
+          r1.recurseSuperFast(midPoint2, midPoint3, function(num) {
             wrapper(num);
           });
 
-
-          recurseSuperFast(midPoint3, midPoint4, function(num) {
+          r1.recurseSuperFast(midPoint3, midPoint4, function(num) {
+            console.log("recurseSuperFast 3 step #: " + num);
             wrapper(num);
           });
 
-
-          recurseSuperFast(midPoint4, pathChunks.length, function(num) {
+          r1.recurseSuperFast(midPoint4, pathChunks.length, function(num) {
             wrapper(num);
 
           });
-
-          recurseFast(0, midPoint1, function(num) {
+          r2.recurseFast(0, midPoint1, function(num) {
+            console.log("recurseFast 1 step #: " + num);
             wrapper(num);
           });
 
-          recurseFast(midPoint1, midPoint2, function(num) {
+          r2.recurseFast(midPoint1, midPoint2, function(num) {
             wrapper(num);
           });
 
-          recurseFast(midPoint2, midPoint3, function(num) {
+          r2.recurseFast(midPoint2, midPoint3, function(num) {
+            console.log("recurseFast 3 step #: " + num);
             wrapper(num);
           });
 
-
-          recurseFast(midPoint3, midPoint4, function(num) {
+          r2.recurseFast(midPoint3, midPoint4, function(num) {
             wrapper(num);
           });
 
-          recurseFast(midPoint4, pathChunks.length, function(num) {
+          r2.recurseFast(midPoint4, pathChunks.length, function(num) {
             wrapper(num);
           });
 
@@ -290,11 +251,24 @@ var ResultsView = require('./views/resultsView');
                                 alert(status);
                                 return;
                               }
-                              var contentString = (result.name + ", " + result.formatted_phone_number);
-                              infowindow.setContent(contentString);
-                              //infowindow.setContent(result.formatted_phone_number);
-                              infowindow.open(map, marker);
                               console.log(result);
+                              //var contentString = (result.name + ", " + result.formatted_phone_number);
+                              //infowindow.setContent(contentString);
+                              console.log("RESULT!!!");
+                              console.log(result);
+
+
+                              var list = "<% _.each(result, function(name) { %> <li><%= name %></li> <% }); %>";
+                              
+
+                              //=> "<li>moe</li><li>curly</li><li>larry</li>"
+                              console.log("LIST");
+                              //console.log(list);
+                              console.log(_.template(list, {result: [result.name, result.formatted_phone_number]}));
+                              var placeData = _.template(list, {result: [result.name, result.formatted_phone_number]});
+                              infowindow.setContent(placeData);
+                              infowindow.open(map, marker);
+                              //console.log(result);
                             })
                           });
                         }
