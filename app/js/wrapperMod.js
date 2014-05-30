@@ -91,7 +91,7 @@ module.exports.wrapper = function(count, pathChunks, map, markers) {
                   infowindow.setContent(placeData);
                   infowindow.open(map, marker);
                   //console.log(result);
-                })
+                });
               });
             }
 
@@ -101,4 +101,4 @@ module.exports.wrapper = function(count, pathChunks, map, markers) {
         }
     });
   
-}
+};
