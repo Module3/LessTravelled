@@ -152,7 +152,7 @@ p {
 
 .submit {
   background-color: #cc4400;
-  margin: 10px 0 5px 0;
+  margin: 10px auto 5px auto;
   outline-style: none;
   width: 150px;
   height: 45px;

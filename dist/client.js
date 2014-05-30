@@ -12458,7 +12458,6 @@ module.exports = Backbone.View.extend({
   advanced: function(){
     $('body').removeClass('welcome');
     $('.advanced-controls').toggleClass('hidden');
-    $('advanced-button').toggleClass('hidden');
   }
 });
 
@@ -12509,7 +12508,6 @@ module.exports = Backbone.View.extend({
   advanced: function(){
     $('body').removeClass('welcome');
     $('.advanced-controls').toggleClass('hidden');
-    $('advanced-button').toggleClass('hidden');
   }
 });
 },{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":10,"./templates/results.hbs":13}],12:[function(require,module,exports){

@@ -44,6 +44,5 @@ module.exports = Backbone.View.extend({
   advanced: function(){
     $('body').removeClass('welcome');
     $('.advanced-controls').toggleClass('hidden');
-    $('advanced-button').toggleClass('hidden');
   }
 });
