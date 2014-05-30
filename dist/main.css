@@ -13,6 +13,7 @@ a {
   text-decoration: none;
   color: #eee;
   font-size: 25px;
+  line-height: 45px;
 }
 
 .page {
@@ -368,6 +369,7 @@ p {
 
   .welcome a {
     font-size: 35px;
+    line-height: 55px;
   }
 
   .welcome .advanced-button {
