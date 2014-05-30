@@ -12393,7 +12393,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class='form-div'>\n  <form class='form'>\n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='submit'>SEARCH</button>\n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
+  return "<div class='form-div'>\n  <form class='form'>\n    \n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    \n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    \n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    \n    <button id=\"submit\" class='submit'><a href='#search'>SEARCH</a></button>\n    \n    <p class='advanced-button'>Advanced</p>\n  \n  </form>\n</div>";
   });
 
 },{"hbsfy/runtime":15}],8:[function(require,module,exports){
