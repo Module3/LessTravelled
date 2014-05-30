@@ -1,6 +1,7 @@
 var ResultsView = require('./views/resultsView');
 var R1 = require('./recurse').recurseSuperFast;
 var R2 = require('./recurse').recurseFast;
+var PC = require('./pathChunker');
 
 var _ = require('underscore');
 
@@ -98,29 +99,7 @@ var _ = require('underscore');
         if (status == google.maps.DirectionsStatus.OK) {
           directionsRenderer.setDirections(result);
 
-          var vertices = result.routes[0].overview_path;
-          var masterPath = [];
-          for (i = 0; i < result.routes[0].legs[0].steps.length; i++) {
-            for (j = 0; j < result.routes[0].legs[0].steps[i].lat_lngs.length; j++) {
-              masterPath.push(result.routes[0].legs[0].steps[i].lat_lngs[j]);
-            }
-          }
-
-          var pathChunks = [];
-          var chunkCounter = 0;
-          var currentChunk = [];
-
-          for (i = 1; i < masterPath.length + 1; i++) {
-            currentChunk.push(masterPath[i]);
-            if (i % 35 === 0) {
-
-              pathChunks.push(currentChunk);
-              currentChunk = [];
-              chunkCounter += 35;
-            } else if (i === masterPath.length) {
-              pathChunks.push(currentChunk);
-            }
-          }
+          var pathChunks = PC.pathChunker(result);
 
           var url = "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer";
           var svc = new gmaps.ags.GeometryService(url);
@@ -251,17 +230,11 @@ var _ = require('underscore');
                                 alert(status);
                                 return;
                               }
-                              console.log(result);
-                              //var contentString = (result.name + ", " + result.formatted_phone_number);
-                              //infowindow.setContent(contentString);
+
                               console.log("RESULT!!!");
                               console.log(result);
-
-
                               var list = "<% _.each(result, function(name) { %> <li><%= name %></li> <% }); %>";
                               
-
-                              //=> "<li>moe</li><li>curly</li><li>larry</li>"
                               console.log("LIST");
                               //console.log(list);
                               console.log(_.template(list, {result: [result.name, result.formatted_phone_number]}));
