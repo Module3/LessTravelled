@@ -1,5 +1,4 @@
-//module.exports.recurseSuperFast = function() {
-
+var _ = require('underscore');
 
 module.exports.wrapper = function(count, pathChunks, map, markers) {
 
@@ -81,12 +80,14 @@ module.exports.wrapper = function(count, pathChunks, map, markers) {
 
                   console.log("RESULT!!!");
                   console.log(result);
-                  var list = "<% _.each(result, function(name) { %> <li><%= name %></li> <% }); %>";
+                  var list = "<% _.each(result, function(name) { %> <ul><%= name %></ul> <% }); %>";
                   
                   console.log("LIST");
                   //console.log(list);
                   console.log(_.template(list, {result: [result.name, result.formatted_phone_number]}));
-                  var placeData = _.template(list, {result: [result.name, result.formatted_phone_number]});
+
+                 
+                  var placeData = _.template(list, {result: [result.name, result.formatted_phone_number, result.formatted_address]});
                   infowindow.setContent(placeData);
                   infowindow.open(map, marker);
                   //console.log(result);
