@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -30,11 +30,11 @@ module.exports = Backbone.View.extend({
   newSearch: function(e){
     e.preventDefault();
     if ($('#from').val()==='Start:' || ''){
-      alert('Please enter a "Start:" location');
+      alert('Please enter a "Start:" location');// jshint ignore:line
       return false;
     }
     if($('#to').val()==='End:' || ''){
-      alert('Please enter an "End:" location');
+      alert('Please enter an "End:" location');// jshint ignore:line
       return false;
     }
     map.route();
