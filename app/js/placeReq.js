@@ -1,5 +1,5 @@
 module.exports.placeReq = function () {
-  var placeQuest;
+  var placeRequest;
 
   if(document.getElementById('mode').value==="DRIVING"){
     placeRequest = {
