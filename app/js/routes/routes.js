@@ -10,14 +10,26 @@ var ControlsView = require('../views/controlsView');
 
 module.exports = Backbone.Router.extend({
   routes: {
-    "": "index"
+    "": "index",
+    "search": "search"
   },
   initialize: function(){
-    console.log('router initialized');
   },
   index: function(){
-    console.log('index route called');
     var controls = new ControlsView();
+  },
+  search: function(){
+    if ($('#from').val()==='Start:' || ''){
+      alert('Please enter a "Start:" location');// jshint ignore:line
+      return false;
+    }
+    if($('#to').val()==='End:' || ''){
+      alert('Please enter an "End:" location');// jshint ignore:line
+      return false;
+    }
+    map.route();
+    $('body').removeClass('welcome');
   }
+
 });
 
