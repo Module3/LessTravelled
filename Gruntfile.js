@@ -16,7 +16,7 @@ module.exports = function(grunt){
       options: {
         jshintrc: true
       },
-      all: ['Gruntfile.js', 'server.js', './test/**/*.js', 'app/js/**/*.js']
+      all: ['Gruntfile.js', 'server.js', './test/front-end/acceptance/*.js', 'test/front-end/unit/*.js', 'app/js/**/*.js']
     },
     clean: ['dist'],
     copy: {
@@ -37,18 +37,18 @@ module.exports = function(grunt){
       options: {
         transform: ['debowerify', 'hbsfy'],
         debug: true
+      },
+      test: {
+        src: ['test/front-end/unit/**/*.js'],
+        dest: 'test/front-end/test-suite.js'
       }
     },
-    simplemocha: {
-      options: {
-        ui: 'bdd',
-      }, 
-      all: { src: ['./test/api/**/*.js'] }
+    simplemocha : {
+      all : 'test/front-end/test-suite.js'
     },
     express: {
       dev: {
         options: {
-          background: true,
           script: 'server.js'
         }
       },
@@ -67,13 +67,10 @@ module.exports = function(grunt){
     casper: {
       acceptance: {
         options: {
-          pre: 'node server.js',
-          verbose: true,
-          'log-level': 'debug',
           test: true
         },
         files: {
-          '/dev/null': ['test/acceptance/*_test.js']
+          'test/front-end/acceptance/casper-results.xml': ['test/front-end/acceptance/*_test.js']
         }
       }
     },
@@ -88,28 +85,14 @@ module.exports = function(grunt){
           spawn: false
         }
       }
-    },
-    shell: {
-      mongodb: {
-        command: 'mongod --dbpath ./db',
-        options: {
-          async: true,
-          stdout: false,
-          stderr: true,
-          failOnError: true,
-          execOptions: {
-            cwd: '.'
-          }
-        }
-      }
     }
   });
 
   grunt.registerTask('serve', ['build', 'express:dev', 'watch']);
   grunt.registerTask('server', 'serve');
   grunt.registerTask('test:acceptance', ['express:dev', 'casper']);
-  grunt.registerTask('test:api', 'simplemocha');
-  grunt.registerTask('test', ['test:acceptance', 'test:api']); 
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('test:unit', ['browserify:test', 'simplemocha']);
+  grunt.registerTask('test', ['jshint', 'test:acceptance', 'test:unit']); 
+  grunt.registerTask('default', ['jshint']);
   grunt.registerTask('build', ['clean', 'browserify', 'copy']);
 };

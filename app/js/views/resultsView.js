@@ -6,26 +6,28 @@ var $ = require('jquery');
 Backbone.$ = $;
 
 var map = require('../map');
-var ResultsView = require('./resultsView');
+var controlsView = require('./controlsView');
 
 
 
 module.exports = Backbone.View.extend({
   el: '#controls',
-  initialize: function(){
-    this.render();
-    map.initialize();
+  initialize: function(mapResult, mapInput){
+    this.render(mapResult, mapInput);
   },
-  render: function(){
-    var template = require('./templates/controls.hbs');
-    $('#controls').html(template());
+  render: function(mapResult, mapInput){
+    var route = mapResult;
+    var origin = route.routes[0].legs[0].start_address;
+    var destination = route.routes[0].legs[0].end_address;
+    var template = require('./templates/results.hbs');
+    $('.advanced-controls').addClass('hidden');
+    $('#controls').html(template({result1: origin, result2: destination, userInput: mapInput, id: this.counter}));
     return this;
   },
   events: {
-    "click #submit" : "submit",
-    "click .advanced-button": "advanced"
+    "click #submit" : "newSearch"
   },
-  submit: function(e){
+  newSearch: function(e){
     e.preventDefault();
     if ($('#from').val()==='Start:' || ''){
       alert('Please enter a "Start:" location');// jshint ignore:line
@@ -37,10 +39,5 @@ module.exports = Backbone.View.extend({
     }
     map.route();
     $('body').removeClass('welcome');
-  },
-  advanced: function(){
-    $('body').removeClass('welcome');
-    $('.advanced-controls').toggleClass('hidden');
-    $('advanced-button').toggleClass('hidden');
   }
 });
