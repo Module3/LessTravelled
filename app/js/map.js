@@ -1,11 +1,12 @@
 var ResultsView = require('./views/resultsView');
 var RUN = require('./recurseRunner');
+var PR = require('./placeReq');
 var _ = require('underscore');
 
-  var map = null;
-  var markers = [];
-    console.log("HOPE THIS PASSES!!");
-    module.exports.initialize = function() {
+var map = null;
+var markers = [];
+
+module.exports.initialize = function() {
       var mapOptions = {
         center: new google.maps.LatLng(47.6797, -122.3331),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -64,27 +65,7 @@ var _ = require('underscore');
       clearMarkers();
       distance = parseFloat(document.getElementById("distance").value);
 
-      var placeRequest;
-      if(document.getElementById('mode').value==="DRIVING"){
-        placeRequest = {
-          origin: document.getElementById("from").value,
-          destination: document.getElementById("to").value,
-          travelMode: google.maps.DirectionsTravelMode.DRIVING
-        };
-      } else if (document.getElementById('mode').value==="WALKING"){
-        placeRequest = {
-          origin: document.getElementById("from").value,
-          destination: document.getElementById("to").value,
-          travelMode: google.maps.DirectionsTravelMode.WALKING
-        };
-      } else {
-        placeRequest = {
-          origin: document.getElementById("from").value,
-          destination: document.getElementById("to").value,
-          travelMode: google.maps.DirectionsTravelMode.BICYCLING
-        };
-      }
-
+      var placeRequest = PR.placeReq();
       var searchTerm = document.getElementById('search-term').value;
 
       directionService.route(placeRequest, function(result, status) {
