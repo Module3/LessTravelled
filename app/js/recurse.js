@@ -26,7 +26,7 @@ module.exports.recurseFast = function() {
 		setTimeout(function() {
 		  callback(num);
 		  num += 2;
-		  that.recurseFast(num, max, callback)
+		  that.recurseFast(num, max, callback);
 		}, 0);
 	};
 return r2;
