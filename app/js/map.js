@@ -1,5 +1,4 @@
 var ResultsView = require('./views/resultsView');
-var PC = require('./pathChunker');
 var RUN = require('./recurseRunner');
 var _ = require('underscore');
 
@@ -92,9 +91,7 @@ var _ = require('underscore');
         var userKeyword;
         if (status == google.maps.DirectionsStatus.OK) {
           directionsRenderer.setDirections(result);
-          var pathChunks = PC.pathChunker(result);
-          RUN.recurseRunner(pathChunks, map, markers);
-
+          RUN.recurseRunner(result, map, markers);
         } else {
           alert("Directions query failed: " + status);
         }

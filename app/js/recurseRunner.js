@@ -1,8 +1,11 @@
 var R1 = require('./recurse').recurseSuperFast;
 var R2 = require('./recurse').recurseFast;
 var W  = require('./wrapperMod');
+var PC = require('./pathChunker');
 
-module.exports.recurseRunner = function(pathChunks, map, markers) {
+module.exports.recurseRunner = function(result, map, markers) {
+
+  var pathChunks = PC.pathChunker(result);
 
   midPoint1 = Math.ceil(pathChunks.length/5);
   midPoint2 = Math.ceil(pathChunks.length/5*2);
