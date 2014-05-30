@@ -34,13 +34,14 @@ module.exports = function(grunt){
         src: 'app/js/**/*.js',
         dest: 'dist/client.js'
       },
-      options: {
-        transform: ['debowerify', 'hbsfy'],
-        debug: true
-      },
+
       test: {
         src: ['test/front-end/unit/**/*.js'],
         dest: 'test/front-end/test-suite.js'
+      },
+      options: {
+        transform: ['debowerify', 'hbsfy'],
+        debug: true
       }
     },
     simplemocha : {
