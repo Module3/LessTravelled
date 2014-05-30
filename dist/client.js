@@ -12165,55 +12165,26 @@ $(function(){
 });
 
 
-},{"./../bower_components/backbone/backbone.js":1,"./../bower_components/jquery/dist/jquery.js":2,"./../bower_components/underscore/underscore.js":3,"./routes/routes":6,"./views/controlsView":7}],5:[function(require,module,exports){
+},{"./../bower_components/backbone/backbone.js":1,"./../bower_components/jquery/dist/jquery.js":2,"./../bower_components/underscore/underscore.js":3,"./routes/routes":9,"./views/controlsView":10}],5:[function(require,module,exports){
 var ResultsView = require('./views/resultsView');
+var PC = require('./pathChunker');
+var RUN = require('./recurseRunner');
+var _ = require("./../bower_components/underscore/underscore.js");
 
   var map = null;
   var markers = [];
 
-
-
-    function recurseSuperFast(num, max, callback) {
-      if (num >= max) {
-        return false;
-      }
-      setTimeout(function() {
-        //console.log(callback);
-        callback(num);
-
-        num += 8;
-
-        recurseSuperFast(num, max, callback);
-      }, 0);
-    }
-
-    function recurseFast(num, max, callback) {
-      if (num >= max) {
-          return false;
-      }
-
-      setTimeout(function() {
-        //console.log(callback);
-        callback(num);
-
-        num += 2;
-
-        recurseFast(num, max, callback);
-      }, 0);
-    }
-  
     module.exports.initialize = function() {
       var mapOptions = {
         center: new google.maps.LatLng(47.6797, -122.3331),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoom: 10
       };
-    
-      map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      
-      directionService = new google.maps.DirectionsService();
-      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });  
 
+      map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+      directionService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
 
       var input = document.getElementById('from');
       var input2 = document.getElementById('to');
@@ -12257,10 +12228,9 @@ var ResultsView = require('./views/resultsView');
       markers = null;
       markers = [];
     };
-    
+
     module.exports.route = function() {
       clearMarkers();
-
       distance = parseFloat(document.getElementById("distance").value);
 
       var placeRequest;
@@ -12286,199 +12256,142 @@ var ResultsView = require('./views/resultsView');
 
       var searchTerm = document.getElementById('search-term').value;
 
-      // Make the directions place request
       directionService.route(placeRequest, function(result, status) {
         var userKeyword;
         if (status == google.maps.DirectionsStatus.OK) {
           directionsRenderer.setDirections(result);
-          //directionsRenderer.setMap(map);
-          //google.maps.event.addListener(submitButton, 'onclick', function() {
-            //map.fitBounds(new google.maps.LatLng(47.6797, -122.3331));
-          //});
-          
+          var pathChunks = PC.pathChunker(result);
+          RUN.recurseRunner(pathChunks, map, markers);
 
-          //var polyOptions = {
-            //strokeColor: "red",
-            //strokeWeight: 0
-          //}
-
-          var vertices = result.routes[0].overview_path;
-          var masterPath = [];
-          for (i = 0; i < result.routes[0].legs[0].steps.length; i++) {
-            for (j = 0; j < result.routes[0].legs[0].steps[i].lat_lngs.length; j++) {
-              masterPath.push(result.routes[0].legs[0].steps[i].lat_lngs[j]);
-            }
-          }
-
-          var pathChunks = [];
-          var chunkCounter = 0;
-          var currentChunk = [];
-
-          for (i = 1; i < masterPath.length + 1; i++) {
-            currentChunk.push(masterPath[i]);
-            if (i % 35 === 0) {
-
-              pathChunks.push(currentChunk);
-              currentChunk = [];
-              chunkCounter += 35;
-            } else if (i === masterPath.length) {
-              pathChunks.push(currentChunk);
-            }
-          }
-
-          var url = "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer";
-          var svc = new gmaps.ags.GeometryService(url);
-
-
-          midPoint1 = Math.ceil(pathChunks.length/5);
-          midPoint2 = Math.ceil(pathChunks.length/5*2);
-          midPoint3 = Math.ceil(pathChunks.length/5*3);
-          midPoint4 = Math.ceil(pathChunks.length/5*4);
-    
-          recurseSuperFast(0, midPoint1, function(num) {
-            wrapper(num);
-          });
-
-
-          recurseSuperFast(midPoint1, midPoint2, function(num) {
-            wrapper(num);
-          });
-
-
-          recurseSuperFast(midPoint2, midPoint3, function(num) {
-            wrapper(num);
-          });
-
-
-          recurseSuperFast(midPoint3, midPoint4, function(num) {
-            wrapper(num);
-          });
-
-
-          recurseSuperFast(midPoint4, pathChunks.length, function(num) {
-            wrapper(num);
-
-          });
-
-          recurseFast(0, midPoint1, function(num) {
-            wrapper(num);
-          });
-
-          recurseFast(midPoint1, midPoint2, function(num) {
-            wrapper(num);
-          });
-
-          recurseFast(midPoint2, midPoint3, function(num) {
-            wrapper(num);
-          });
-
-
-          recurseFast(midPoint3, midPoint4, function(num) {
-            wrapper(num);
-          });
-
-          recurseFast(midPoint4, pathChunks.length, function(num) {
-            wrapper(num);
-          });
-
-            
-          function wrapper(count) {
-            var routeBoxer = new RouteBoxer();
-            
-            if ((typeof pathChunks[count][pathChunks.length - 1]  == 'undefined') && (pathChunks[count].length != 35)) {
-              pathChunks[count].splice(pathChunks[count].length - 1, 1);
-            }
-
-
-            var myLineCurrent = new google.maps.Polyline({
-              map: map,
-              path: pathChunks[count],
-              strokeColor: '#00B506',
-              strokeWeight: 0
-            });
-            var params = {
-              geometries: [myLineCurrent],
-              bufferSpatialReference: gmaps.ags.SpatialReference.WEB_MERCATOR,
-              distances: [(document.getElementById("distance").value)],
-              unit: 9035, //miles
-              unionResults: false
-            };
-              var buffResult;
-                svc.buffer(params, function(results, err) {
-                  if (!err) {
-                      //results.geometries[0][0].setMap(map);
-                      buffResult = results.geometries[0][0];
-
-                      var boxes = routeBoxer.box(pathChunks[count], distance);
-                      
-                      console.log("Number of boxes");
-                      console.log(boxes.length);
-
-                      for (var i = 0; i < boxes.length; i++) { 
-                        var bounds = boxes[i]; 
-                        var infowindow = new google.maps.InfoWindow();
-                        var service = new google.maps.places.PlacesService(map);
-
-                        var userKeyword = document.getElementById('search-term').value;
-
-                        var keywordRequest = {
-                          bounds: bounds,
-                          keyword: [userKeyword]
-                        };
-
-                        service.nearbySearch(keywordRequest, callback);
-                        function callback(results, status) {
-                          if (status == google.maps.places.PlacesServiceStatus.OK) {                   
-                            for (var i = 0; i < results.length; i++) {                    
-                              var myLatlng = new google.maps.LatLng(results[i].geometry.location.k,results[i].geometry.location.A);   
-                              if (google.maps.geometry.poly.containsLocation(myLatlng, buffResult)) {
-
-                                createMarker(results[i]);
-                              } else {
-                                //console.log("Didn't get displayed: " + results[i].name);
-                              }
-                            }
-                          }
-                        }
-                        function createMarker(place) {
-                          var placeLoc = place.geometry.location;
-                          var marker = new google.maps.Marker({
-                            map: map,
-                            position: place.geometry.location
-                          });
-
-                          markers.push(marker);
-
-                          google.maps.event.addListener(marker, 'click', function() {
-                            service.getDetails(place, function(result, status) {
-                              if (status != google.maps.places.PlacesServiceStatus.OK) {
-                                alert(status);
-                                return;
-                              }
-                              var contentString = (result.name + ", " + result.formatted_phone_number);
-                              infowindow.setContent(contentString);
-                              //infowindow.setContent(result.formatted_phone_number);
-                              infowindow.open(map, marker);
-                              console.log(result);
-                            })
-                          });
-                        }
-
-                      } 
-                  } else {
-                    console.log("Buffer Error!");
-                  }
-              });
-            
-            }
-          
         } else {
           alert("Directions query failed: " + status);
         }
         new ResultsView(result, searchTerm);
       });
+    };
+
+},{"./../bower_components/underscore/underscore.js":3,"./pathChunker":6,"./recurseRunner":8,"./views/resultsView":11}],6:[function(require,module,exports){
+module.exports.pathChunker = function(result) {
+  var masterPath = [];
+  for (i = 0; i < result.routes[0].legs[0].steps.length; i++) {
+    for (j = 0; j < result.routes[0].legs[0].steps[i].lat_lngs.length; j++) {
+      masterPath.push(result.routes[0].legs[0].steps[i].lat_lngs[j]);
     }
-},{"./views/resultsView":8}],6:[function(require,module,exports){
+  }
+
+  var pathChunks = [];
+  var chunkCounter = 0;
+  var currentChunk = [];
+
+  for (i = 1; i < masterPath.length + 1; i++) {
+    currentChunk.push(masterPath[i]);
+    if (i % 35 === 0) {
+
+      pathChunks.push(currentChunk);
+      currentChunk = [];
+      chunkCounter += 35;
+    } else if (i === masterPath.length) {
+      pathChunks.push(currentChunk);
+    }
+  }
+  
+  return pathChunks;
+};
+},{}],7:[function(require,module,exports){
+module.exports.recurseSuperFast = function() {
+	var r1 = {};
+	r1.recurseSuperFast = function(num, max, callback) {
+		if (num >= max) {
+			return false;
+		}
+
+		var that = this;
+		setTimeout(function() {
+			callback(num);
+			num += 8;
+			that.recurseSuperFast(num, max, callback);
+		}, 0);
+	};
+	return r1;
+};
+
+module.exports.recurseFast = function() {
+	var r2 = new Object;
+	r2.recurseFast = function(num, max, callback) {
+		if (num >= max) {
+			return false;
+		}
+
+		var that = this;
+		setTimeout(function() {
+		  callback(num);
+		  num += 2;
+		  that.recurseFast(num, max, callback)
+		}, 0);
+	};
+return r2;
+};
+
+},{}],8:[function(require,module,exports){
+var R1 = require('./recurse').recurseSuperFast;
+var R2 = require('./recurse').recurseFast;
+var W  = require('./wrapperMod');
+
+module.exports.recurseRunner = function(pathChunks, map, markers) {
+
+  midPoint1 = Math.ceil(pathChunks.length/5);
+  midPoint2 = Math.ceil(pathChunks.length/5*2);
+  midPoint3 = Math.ceil(pathChunks.length/5*3);
+  midPoint4 = Math.ceil(pathChunks.length/5*4);
+
+  var r1 = new R1();
+  var r2 = new R2();
+
+  r1.recurseSuperFast(0, midPoint1, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint1, midPoint2, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint2, midPoint3, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint3, midPoint4, function(num) {
+    console.log("recurseSuperFast 3 step #: " + num);
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r1.recurseSuperFast(midPoint4, pathChunks.length, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+
+  });
+  r2.recurseFast(0, midPoint1, function(num) {
+    console.log("recurseFast 1 step #: " + num);
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint1, midPoint2, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint2, midPoint3, function(num) {
+    console.log("recurseFast 3 step #: " + num);
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint3, midPoint4, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+
+  r2.recurseFast(midPoint4, pathChunks.length, function(num) {
+    W.wrapper(num, pathChunks, map, markers);
+  });
+};
+
+},{"./recurse":7,"./wrapperMod":14}],9:[function(require,module,exports){
 'use strict';
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12491,19 +12404,31 @@ var ControlsView = require('../views/controlsView');
 
 module.exports = Backbone.Router.extend({
   routes: {
-    "": "index"
+    "": "index",
+    "search": "search"
   },
   initialize: function(){
-    console.log('router initialized');
   },
   index: function(){
-    console.log('index route called');
     var controls = new ControlsView();
+  },
+  search: function(){
+    if ($('#from').val()==='Start:' || ''){
+      alert('Please enter a "Start:" location');// jshint ignore:line
+      return false;
+    }
+    if($('#to').val()==='End:' || ''){
+      alert('Please enter an "End:" location');// jshint ignore:line
+      return false;
+    }
+    map.route();
+    $('body').removeClass('welcome');
   }
+
 });
 
 
-},{"../map":5,"../views/controlsView":7,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3}],7:[function(require,module,exports){
+},{"../map":5,"../views/controlsView":10,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3}],10:[function(require,module,exports){
 'use strict';
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12528,21 +12453,7 @@ module.exports = Backbone.View.extend({
     return this;
   },
   events: {
-    "click #submit" : "submit",
     "click .advanced-button": "advanced"
-  },
-  submit: function(e){
-    e.preventDefault();
-    if ($('#from').val()==='Start:' || ''){
-      alert('Please enter a "Start:" location');// jshint ignore:line
-      return false;
-    }
-    if($('#to').val()==='End:' || ''){
-      alert('Please enter an "End:" location');// jshint ignore:line
-      return false;
-    }
-    map.route();
-    $('body').removeClass('welcome');
   },
   advanced: function(){
     $('body').removeClass('welcome');
@@ -12551,7 +12462,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./resultsView":8,"./templates/controls.hbs":9}],8:[function(require,module,exports){
+},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./resultsView":11,"./templates/controls.hbs":12}],11:[function(require,module,exports){
 'use strict';
 
 var Backbone = require("./../../bower_components/backbone/backbone.js");
@@ -12579,7 +12490,8 @@ module.exports = Backbone.View.extend({
     return this;
   },
   events: {
-    "click #submit" : "newSearch"
+    "click #submit" : "newSearch",
+    "click .advanced-button": "advanced"
   },
   newSearch: function(e){
     e.preventDefault();
@@ -12593,9 +12505,14 @@ module.exports = Backbone.View.extend({
     }
     map.route();
     $('body').removeClass('welcome');
+  },
+  advanced: function(){
+    $('body').removeClass('welcome');
+    $('.advanced-controls').toggleClass('hidden');
+    $('advanced-button').toggleClass('hidden');
   }
 });
-},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":7,"./templates/results.hbs":10}],9:[function(require,module,exports){
+},{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":10,"./templates/results.hbs":13}],12:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -12604,10 +12521,10 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class='form-div'>\n  <form class='form'>\n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='submit'>SEARCH</button>\n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
+  return "<div class='form-div'>\n  <form class='form'>\n    \n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    \n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    \n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    \n    <div id=\"submit\" class='submit'><a href='#search'>SEARCH</a></div>\n    \n    <p class='advanced-button'>Advanced</p>\n  \n  </form>\n</div>";
   });
 
-},{"hbsfy/runtime":18}],10:[function(require,module,exports){
+},{"hbsfy/runtime":22}],13:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -12616,23 +12533,128 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class='form-div'>\n  <div class='form'>\n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"";
+  buffer += "<div class='form-div'>\n  <div class='form'>\n    \n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"";
   if (helper = helpers.result1) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.result1); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"";
+    + "\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    \n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"";
   if (helper = helpers.result2) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.result2); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"";
+    + "\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    \n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"";
   if (helper = helpers.userInput) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.userInput); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='resubmit'>NEW SEARCH</button>\n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
+  buffer += "\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    \n    <button id=\"submit\" class='resubmit'>NEW SEARCH</button>\n    \n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
   return buffer;
   });
 
-},{"hbsfy/runtime":18}],11:[function(require,module,exports){
+},{"hbsfy/runtime":22}],14:[function(require,module,exports){
+var _ = require("./../bower_components/underscore/underscore.js");
+
+module.exports.wrapper = function(count, pathChunks, map, markers) {
+
+//function wrapper(count, pathChunks, map) {
+  var routeBoxer = new RouteBoxer();
+  var url = "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer";
+  var svc = new gmaps.ags.GeometryService(url);
+  
+  if ((typeof pathChunks[count][pathChunks.length - 1]  == 'undefined') && (pathChunks[count].length != 35)) {
+    pathChunks[count].splice(pathChunks[count].length - 1, 1);
+  }
+
+
+  var myLineCurrent = new google.maps.Polyline({
+    map: map,
+    path: pathChunks[count],
+    strokeColor: '#00B506',
+    strokeWeight: 0
+  });
+  var params = {
+    geometries: [myLineCurrent],
+    bufferSpatialReference: gmaps.ags.SpatialReference.WEB_MERCATOR,
+    distances: [(document.getElementById("distance").value)],
+    unit: 9035, //miles
+    unionResults: false
+  };
+    var buffResult;
+    svc.buffer(params, function(results, err) {
+      if (!err) {
+          //results.geometries[0][0].setMap(map);
+          buffResult = results.geometries[0][0];
+
+          var boxes = routeBoxer.box(pathChunks[count], distance);
+          
+          console.log("Number of boxes");
+          console.log(boxes.length);
+
+          for (var i = 0; i < boxes.length; i++) { 
+            var bounds = boxes[i]; 
+            var infowindow = new google.maps.InfoWindow();
+            var service = new google.maps.places.PlacesService(map);
+
+            var userKeyword = document.getElementById('search-term').value;
+
+            var keywordRequest = {
+              bounds: bounds,
+              keyword: [userKeyword]
+            };
+
+            service.nearbySearch(keywordRequest, callback);
+            function callback(results, status) {
+              if (status == google.maps.places.PlacesServiceStatus.OK) {                   
+                for (var i = 0; i < results.length; i++) {                    
+                  var myLatlng = new google.maps.LatLng(results[i].geometry.location.k,results[i].geometry.location.A);   
+                  if (google.maps.geometry.poly.containsLocation(myLatlng, buffResult)) {
+
+                    createMarker(results[i]);
+                  } else {
+                    //console.log("Didn't get displayed: " + results[i].name);
+                  }
+                }
+              }
+            }
+            function createMarker(place) {
+              var placeLoc = place.geometry.location;
+              var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+              });
+
+              markers.push(marker);
+
+              google.maps.event.addListener(marker, 'click', function() {
+                service.getDetails(place, function(result, status) {
+                  if (status != google.maps.places.PlacesServiceStatus.OK) {
+                    alert(status);
+                    return;
+                  }
+
+                  console.log("RESULT!!!");
+                  console.log(result);
+                  var list = "<% _.each(result, function(name) { %> <ul><%= name %></ul> <% }); %>";
+                  
+                  console.log("LIST");
+                  //console.log(list);
+                  console.log(_.template(list, {result: [result.name, result.formatted_phone_number]}));
+
+                 
+                  var placeData = _.template(list, {result: [result.name, result.formatted_phone_number, result.formatted_address]});
+                  infowindow.setContent(placeData);
+                  infowindow.open(map, marker);
+                  //console.log(result);
+                })
+              });
+            }
+
+          } 
+        } else {
+          console.log("Buffer Error!");
+        }
+    });
+  
+}
+},{"./../bower_components/underscore/underscore.js":3}],15:[function(require,module,exports){
 "use strict";
 /*globals Handlebars: true */
 var base = require("./handlebars/base");
@@ -12665,7 +12687,7 @@ var Handlebars = create();
 Handlebars.create = create;
 
 exports["default"] = Handlebars;
-},{"./handlebars/base":12,"./handlebars/exception":13,"./handlebars/runtime":14,"./handlebars/safe-string":15,"./handlebars/utils":16}],12:[function(require,module,exports){
+},{"./handlebars/base":16,"./handlebars/exception":17,"./handlebars/runtime":18,"./handlebars/safe-string":19,"./handlebars/utils":20}],16:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -12846,7 +12868,7 @@ exports.log = log;var createFrame = function(object) {
   return obj;
 };
 exports.createFrame = createFrame;
-},{"./exception":13,"./utils":16}],13:[function(require,module,exports){
+},{"./exception":17,"./utils":20}],17:[function(require,module,exports){
 "use strict";
 
 var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
@@ -12875,7 +12897,7 @@ function Exception(message, node) {
 Exception.prototype = new Error();
 
 exports["default"] = Exception;
-},{}],14:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -13013,7 +13035,7 @@ exports.program = program;function invokePartial(partial, name, context, helpers
 exports.invokePartial = invokePartial;function noop() { return ""; }
 
 exports.noop = noop;
-},{"./base":12,"./exception":13,"./utils":16}],15:[function(require,module,exports){
+},{"./base":16,"./exception":17,"./utils":20}],19:[function(require,module,exports){
 "use strict";
 // Build out our basic SafeString type
 function SafeString(string) {
@@ -13025,7 +13047,7 @@ SafeString.prototype.toString = function() {
 };
 
 exports["default"] = SafeString;
-},{}],16:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 /*jshint -W004 */
 var SafeString = require("./safe-string")["default"];
@@ -13102,12 +13124,12 @@ exports.escapeExpression = escapeExpression;function isEmpty(value) {
 }
 
 exports.isEmpty = isEmpty;
-},{"./safe-string":15}],17:[function(require,module,exports){
+},{"./safe-string":19}],21:[function(require,module,exports){
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
 module.exports = require('./dist/cjs/handlebars.runtime');
 
-},{"./dist/cjs/handlebars.runtime":11}],18:[function(require,module,exports){
+},{"./dist/cjs/handlebars.runtime":15}],22:[function(require,module,exports){
 module.exports = require("handlebars/runtime")["default"];
 
-},{"handlebars/runtime":17}]},{},[4,5,6,7,8])
+},{"handlebars/runtime":21}]},{},[4,5,6,7,8,9,10,11,14])

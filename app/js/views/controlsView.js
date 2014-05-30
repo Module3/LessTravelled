@@ -22,21 +22,7 @@ module.exports = Backbone.View.extend({
     return this;
   },
   events: {
-    "click #submit" : "submit",
     "click .advanced-button": "advanced"
-  },
-  submit: function(e){
-    e.preventDefault();
-    if ($('#from').val()==='Start:' || ''){
-      alert('Please enter a "Start:" location');// jshint ignore:line
-      return false;
-    }
-    if($('#to').val()==='End:' || ''){
-      alert('Please enter an "End:" location');// jshint ignore:line
-      return false;
-    }
-    map.route();
-    $('body').removeClass('welcome');
   },
   advanced: function(){
     $('body').removeClass('welcome');

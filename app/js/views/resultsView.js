@@ -25,7 +25,8 @@ module.exports = Backbone.View.extend({
     return this;
   },
   events: {
-    "click #submit" : "newSearch"
+    "click #submit" : "newSearch",
+    "click .advanced-button": "advanced"
   },
   newSearch: function(e){
     e.preventDefault();
@@ -39,5 +40,10 @@ module.exports = Backbone.View.extend({
     }
     map.route();
     $('body').removeClass('welcome');
+  },
+  advanced: function(){
+    $('body').removeClass('welcome');
+    $('.advanced-controls').toggleClass('hidden');
+    $('advanced-button').toggleClass('hidden');
   }
 });
