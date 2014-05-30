@@ -5,7 +5,7 @@ var _ = require('underscore');
 
   var map = null;
   var markers = [];
-
+    console.log("HOPE THIS PASSES!!");
     module.exports.initialize = function() {
       var mapOptions = {
         center: new google.maps.LatLng(47.6797, -122.3331),
