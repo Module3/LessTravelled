@@ -82,17 +82,16 @@ var ResultsView = require('./views/resultsView');
       });
     }
 
-    /*module.exports.clearMarkers = function() {
-      if (markers.length !== 0) 
+    var clearMarkers = function() {
         for (var i = 0; i < markers.length; i++ ) {
           markers[i].setMap(null);
         }
       markers = null;
       markers = [];
-    } */
+    } 
     
     module.exports.route = function() {
-      //clearMarkers();
+      clearMarkers();
 
       distance = parseFloat(document.getElementById("distance").value);
 
@@ -282,6 +281,9 @@ var ResultsView = require('./views/resultsView');
                             map: map,
                             position: place.geometry.location
                           });
+
+                          markers.push(marker);
+
                           google.maps.event.addListener(marker, 'click', function() {
                             service.getDetails(place, function(result, status) {
                               if (status != google.maps.places.PlacesServiceStatus.OK) {
