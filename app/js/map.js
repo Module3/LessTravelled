@@ -23,9 +23,6 @@ module.exports.initialize = function() {
 
 module.exports.route = function() {
   CM.clearMarkers(markers);
-  distance = parseFloat(document.getElementById("distance").value);
-
-
   var placeRequest = PR.placeReq();
   var searchTerm = document.getElementById('search-term').value;
 
