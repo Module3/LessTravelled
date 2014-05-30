@@ -1,5 +1,4 @@
-//module.exports.recurseSuperFast = function() {
-
+var _ = require('underscore');
 
 module.exports.wrapper = function(count, pathChunks, map, markers) {
 
