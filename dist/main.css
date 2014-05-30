@@ -11,6 +11,8 @@
 
 a {
   text-decoration: none;
+  color: #eee;
+  font-size: 25px;
 }
 
 .page {
@@ -149,8 +151,6 @@ p {
 
 .submit {
   background-color: #cc4400;
-  color: #eee;
-  font-size: 25px;
   margin: 10px 0 5px 0;
   outline-style: none;
   width: 150px;
@@ -366,6 +366,10 @@ p {
     margin: 15px auto 5px auto;
   }
 
+  .welcome a {
+    font-size: 35px;
+  }
+
   .welcome .advanced-button {
     font-size: 20px;
     display: block;
@@ -439,7 +443,6 @@ p {
   }
 
   .welcome .submit {
-    font-size: 35px;
     width: 175px;
     height: 55px;
     border-radius: 2px;

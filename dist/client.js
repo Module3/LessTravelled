@@ -12398,15 +12398,27 @@ var ControlsView = require('../views/controlsView');
 
 module.exports = Backbone.Router.extend({
   routes: {
-    "": "index"
+    "": "index",
+    "search": "search"
   },
   initialize: function(){
-    console.log('router initialized');
   },
   index: function(){
-    console.log('index route called');
     var controls = new ControlsView();
+  },
+  search: function(){
+    if ($('#from').val()==='Start:' || ''){
+      alert('Please enter a "Start:" location');// jshint ignore:line
+      return false;
+    }
+    if($('#to').val()==='End:' || ''){
+      alert('Please enter an "End:" location');// jshint ignore:line
+      return false;
+    }
+    map.route();
+    $('body').removeClass('welcome');
   }
+
 });
 
 
@@ -12435,21 +12447,7 @@ module.exports = Backbone.View.extend({
     return this;
   },
   events: {
-    "click #submit" : "submit",
     "click .advanced-button": "advanced"
-  },
-  submit: function(e){
-    e.preventDefault();
-    if ($('#from').val()==='Start:' || ''){
-      alert('Please enter a "Start:" location');// jshint ignore:line
-      return false;
-    }
-    if($('#to').val()==='End:' || ''){
-      alert('Please enter an "End:" location');// jshint ignore:line
-      return false;
-    }
-    map.route();
-    $('body').removeClass('welcome');
   },
   advanced: function(){
     $('body').removeClass('welcome');
@@ -12486,7 +12484,8 @@ module.exports = Backbone.View.extend({
     return this;
   },
   events: {
-    "click #submit" : "newSearch"
+    "click #submit" : "newSearch",
+    "click .advanced-button": "advanced"
   },
   newSearch: function(e){
     e.preventDefault();
@@ -12500,6 +12499,11 @@ module.exports = Backbone.View.extend({
     }
     map.route();
     $('body').removeClass('welcome');
+  },
+  advanced: function(){
+    $('body').removeClass('welcome');
+    $('.advanced-controls').toggleClass('hidden');
+    $('advanced-button').toggleClass('hidden');
   }
 });
 },{"../map":5,"./../../bower_components/backbone/backbone.js":1,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/underscore/underscore.js":3,"./controlsView":9,"./templates/results.hbs":12}],11:[function(require,module,exports){
@@ -12511,7 +12515,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class='form-div'>\n  <form class='form'>\n    \n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    \n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    \n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    \n    <button id=\"submit\" class='submit'><a href='#search'>SEARCH</a></button>\n    \n    <p class='advanced-button'>Advanced</p>\n  \n  </form>\n</div>";
+  return "<div class='form-div'>\n  <form class='form'>\n    \n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"Start:\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    \n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"End:\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    \n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"Find:\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    \n    <div id=\"submit\" class='submit'><a href='#search'>SEARCH</a></div>\n    \n    <p class='advanced-button'>Advanced</p>\n  \n  </form>\n</div>";
   });
 
 },{"hbsfy/runtime":21}],12:[function(require,module,exports){
@@ -12523,19 +12527,19 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class='form-div'>\n  <div class='form'>\n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"";
+  buffer += "<div class='form-div'>\n  <div class='form'>\n    \n    <input id=\"from\" class='input' type='text' onfocus=\"if(this.value == 'Start:') { this.value = ''; }\" value=\"";
   if (helper = helpers.result1) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.result1); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"";
+    + "\" onblur=\"if(this.value == '') {this.value='Start:';}\"></input>\n    \n    <input id=\"to\" class='input' type='text' onfocus=\"if(this.value == 'End:') { this.value = ''; }\" value=\"";
   if (helper = helpers.result2) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.result2); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"";
+    + "\" onblur=\"if(this.value == '') {this.value='End:';}\"></input>\n    \n    <input id='search-term' class='input' type='text' onfocus=\"if(this.value == 'Find:') { this.value = ''; }\" value=\"";
   if (helper = helpers.userInput) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.userInput); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    <button id=\"submit\" class='resubmit'>NEW SEARCH</button>\n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
+  buffer += "\" onblur=\"(this.value == '') ? this.value='Find:' : this.style='{color: black;}'\"></input>\n    \n    <button id=\"submit\" class='resubmit'>NEW SEARCH</button>\n    \n    <p class='advanced-button'>Advanced</p>\n  </form>\n</div>";
   return buffer;
   });
 
